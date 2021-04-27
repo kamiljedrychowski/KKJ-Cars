@@ -14,12 +14,13 @@ let test = {
   run:
       function() {
         for (let i = 0; i < test.tests.length; i++) {
-          test.tests[i]()
+          console.log(test.tests[i][0])
+          test.tests[i][1]()
         }
       },
   push:
-      function(func) {
-        test.tests.push(func)
+      function(desc, func) {
+        test.tests.push([desc, func])
       }
 };
 

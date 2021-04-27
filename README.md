@@ -5,6 +5,11 @@ npm run
 npm test
 ```
 
+File watching utility:
+```
+npm install -g nodemon
+```
+
 Polecam dodać do keybindings.json (Ctrl+Shift+P > Open Keyboard Shortcuts (json)):
 
 ```
