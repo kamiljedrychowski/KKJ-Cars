@@ -1,0 +1,625 @@
+swagger: "2.0"
+info:
+  description: "KKJ Cars is a management system targeted at car repair shops."
+  version: "1.0.0"
+  title: "KKJ Cars"
+  contact:
+    email: "apiteam@swagger.io"
+host: "localhost:8080"
+basePath: "/api"
+tags:
+- name: "Customers"
+  description: "Operations about cutomers"
+- name: "Users"
+  description: "Operations about users"
+- name: "Cars"
+- name: "Appointment"
+schemes:
+- "https"
+- "http"
+paths:
+  /users:
+    get:
+      tags:
+      - "Users"
+      responses:
+        200:
+          description: OK
+    post:
+      tags:
+      - "Users"
+      parameters:
+      - in: "body"
+        name: "user"
+        schema: 
+          $ref: "#/definitions/User"
+      responses:
+        200:
+          description: OK
+  /users/{id}:
+    get:
+      tags:
+      - "Users"
+      parameters:
+      - name: "id"
+        in: "path"
+        type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          schema:
+              $ref: "#/definitions/User"
+    put:
+      tags:
+      - "Users"
+      parameters:
+      - name: "id"
+        in: "path"
+        type: string
+        required: true
+      - in: "body"
+        name: "user"
+        schema: 
+          $ref: "#/definitions/User"
+      responses:
+        200:
+          description: OK
+    delete:
+      tags:
+      - "Users"
+      parameters:
+      - name: "id"
+        in: "path"
+        type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          schema: 
+            $ref: "#/definitions/User"
+  /users/{id}/contact:
+    get:
+      tags:
+      - "Users"
+      parameters:
+      - name: "id"
+        in: "path"
+        type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          schema:
+              $ref: "#/definitions/Contact"
+  /customers:
+    get:
+      tags:
+      - "Customers"
+      responses:
+        200:
+          description: OK
+          schema: 
+            $ref: "#/definitions/Contact"
+    post:
+      tags:
+      - "Customers" 
+      parameters:
+      - in: "body"
+        name: "user"
+        schema: 
+          $ref: "#/definitions/Contact"
+      responses:
+        200:
+          description: OK
+  /customers/{id}:
+    get:
+      tags:
+      - "Customers"
+      parameters:
+      - name: "id"
+        in: "path"
+        type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          schema:
+              $ref: "#/definitions/Contact"
+    delete:
+      tags:
+      - "Customers"
+      parameters:
+      - name: "id"
+        in: "path"
+        type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Contact"
+    put:
+      tags:
+      - "Customers" 
+      parameters:
+      - name: "id"
+        in: "path"
+        type: string
+        required: true
+      - in: "body"
+        name: "user"
+        schema: 
+          $ref: "#/definitions/Contact"
+      responses:
+        200:
+          description: OK
+  /customers/{id}/cars:
+    get:
+      tags:
+      - "Customers"
+      parameters:
+      - name: "id"
+        in: "path"
+        type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Car"
+  /cars:
+    get:
+      tags:
+      - "Cars"
+      responses:
+        200:
+          description: OK
+          schema:
+              $ref: "#/definitions/Car"
+    post:
+      tags:
+      - "Cars"
+      parameters:
+      - in: "body"
+        name: "user"
+        schema: 
+          $ref: "#/definitions/Car"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Car"  
+  /cars/{id}:
+    get:
+      tags:
+      - "Cars"
+      parameters:
+      - name: "id"
+        in: "path"
+        type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Car"
+
+    delete:
+      tags:
+      - "Cars"
+      parameters:
+      - name: "id"
+        in: "path"
+        type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          schema:
+              $ref: "#/definitions/Car"
+    put:
+      tags:
+      - "Cars"
+      parameters:
+      - name: "id"
+        in: "path"
+        type: string
+        required: true
+      - in: "body"
+        name: "user"
+        schema: 
+          $ref: "#/definitions/Car"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Car"
+  /appointment:
+    post:
+      tags:
+      - "Appointment"
+      parameters:
+      - in: "body"
+        name: "user"
+        schema: 
+          $ref: "#/definitions/Appointment"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Appointment"  
+    get:
+      tags:
+      - "Appointment"
+      responses:
+        200:
+          description: OK
+          schema:
+              $ref: "#/definitions/Appointment"
+  /appointment/{id}:
+    get:
+      tags:
+      - "Appointment"
+      parameters:
+      - name: "id"
+        in: "path"
+        type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Appointment"
+
+    delete:
+      tags:
+      - "Appointment"
+      parameters:
+      - name: "id"
+        in: "path"
+        type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          schema:
+              $ref: "#/definitions/Appointment"
+    put:
+      tags:
+      - "Appointment"
+      parameters:
+      - name: "id"
+        in: "path"
+        type: string
+        required: true
+      - in: "body"
+        name: "user"
+        schema: 
+          $ref: "#/definitions/Appointment"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Appointment"
+  /car-parts:
+    post:
+      tags:
+      - "CarParts"
+      parameters:
+      - in: "body"
+        name: "user"
+        schema: 
+          $ref: "#/definitions/CarParts"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/CarParts"  
+    get:
+      tags:
+      - "CarParts"
+      responses:
+        200:
+          description: OK
+          schema:
+              $ref: "#/definitions/CarParts"
+  /car-parts/{id}:
+    get:
+      tags:
+      - "CarParts"
+      parameters:
+      - name: "id"
+        in: "path"
+        type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/CarParts"
+
+    delete:
+      tags:
+      - "CarParts"
+      parameters:
+      - name: "id"
+        in: "path"
+        type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          schema:
+              $ref: "#/definitions/CarParts"
+    put:
+      tags:
+      - "CarParts"
+      parameters:
+      - name: "id"
+        in: "path"
+        type: string
+        required: true
+      - in: "body"
+        name: "user"
+        schema: 
+          $ref: "#/definitions/CarParts"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/CarParts"
+  /services:
+    post:
+      tags:
+      - "Services"
+      parameters:
+      - in: "body"
+        name: "user"
+        schema: 
+          $ref: "#/definitions/Services"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Services"  
+    get:
+      tags:
+      - "Services"
+      responses:
+        200:
+          description: OK
+          schema:
+              $ref: "#/definitions/Services"
+  /services/{id}/part:
+    post:
+      tags:
+      - "Services"
+      parameters:
+      - name: "id"
+        in: "path"
+        type: string
+        required: true
+      - in: "body"
+        name: "user"
+        schema: 
+          $ref: "#/definitions/CarParts"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Services"
+  /services/{id}:
+    get:
+      tags:
+      - "Services"
+      parameters:
+      - name: "id"
+        in: "path"
+        type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Services"
+
+    delete:
+      tags:
+      - "Services"
+      parameters:
+      - name: "id"
+        in: "path"
+        type: string
+        required: true
+      responses:
+        200:
+          description: OK
+          schema:
+              $ref: "#/definitions/Services"
+    put:
+      tags:
+      - "Services"
+      parameters:
+      - name: "id"
+        in: "path"
+        type: string
+        required: true
+      - in: "body"
+        name: "user"
+        schema: 
+          $ref: "#/definitions/Services"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Services"
+  /statistics/customers/most-cancelled-appointments:
+    get:
+      tags:
+      - "Statistics"
+      responses:
+        200:
+          description: OK
+          schema:
+            properties:
+              customers:
+                type: array
+                items:
+                  $ref: "#/definitions/Contact"
+  /statistics/customers/least-cancelled-appointments:
+    get:
+      tags:
+      - "Statistics"
+      responses:
+        200:
+          description: OK
+          schema:
+            properties:
+              customers:
+                type: array
+                items:
+                  $ref: "#/definitions/Contact"
+  /statistics/cars/most-valuable-brands:
+    get:
+      tags:
+      - "Statistics"
+      responses:
+        200:
+          description: OK
+          schema:
+            properties:
+              cars:
+                type: array
+                items:
+                  $ref: "#/definitions/Car"
+  /statistics/workers/highest-rating:
+    get:
+      tags:
+      - "Statistics"
+      responses:
+        200:
+          description: OK
+          schema:
+            properties:
+              workers:
+                type: array
+                items:
+                  $ref: "#/definitions/Contact"
+  /statistics/workers/lowest-rating:
+    get:
+      tags:
+      - "Statistics"
+      responses:
+        200:
+          description: OK
+          schema:
+            properties:
+              workers:
+                type: array
+                items:
+                  $ref: "#/definitions/Contact"
+definitions:
+  User:
+    required:
+      - username
+      - email
+      - id
+    properties:
+      username:
+        type: string
+      email:
+        type: string
+        format: email
+      id:
+        type: string
+        format: uuid
+  Services:
+    required:
+      - name
+      - description
+    properties:
+      parts:
+        type: array
+        items:
+          type: string
+      worker_id:
+        type: string
+        format: uuid
+      name: 
+        type: string
+      description:
+        type: string
+  Car:
+    required:
+      - brand
+      - model
+      - VIN
+    properties:
+      appointment_id:
+        type: array
+        items:
+          type: string
+          format: uuid
+      VIN:
+        type: string
+      licensePlate:
+        type: string
+      model:
+        type: string
+      brand:
+        type: string
+  CarParts:
+    required:
+      - price
+      - name
+      - PID
+    properties:
+      price:
+        type: number
+      name:
+        type: string
+      PID:
+        type: string
+  Contact:
+    properties:
+      firstname:
+        type: string
+      surname:
+        type: string    
+      email:
+        type: string    
+      address:
+        type: string    
+      phoneNumber:
+        type: string    
+      birthdate:
+        type: string
+        format: date
+      gender:
+        type: string 
+  Appointment:
+    properties:
+      services:
+        type: array
+        items:
+          type: string
+          format: uuid
+      date:
+        type: string
+        format: date
+      cost:
+        type: number
+      cancellationDate:
+        type: string
+        format: date
+      deliveryDate:
+        type: string
+        format: date
+      description:
+        type: string
+      stars:
+        type: integer
+        minimum: 0
+        maximum: 5
+    

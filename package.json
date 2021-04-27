@@ -1,0 +1,26 @@
+{
+  "name": "kkj-cars",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "node src/app.js test",
+    "start": "node src/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kamiljedrychowski/KKJ-Cars.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kamiljedrychowski/KKJ-Cars/issues"
+  },
+  "homepage": "https://github.com/kamiljedrychowski/KKJ-Cars#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "express": "^4.17.1",
+    "mongoose": "^5.12.5",
+    "swagger-parser": "^10.0.2"
+  }
+}
