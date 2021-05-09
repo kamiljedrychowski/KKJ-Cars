@@ -1,6 +1,7 @@
 const { SchemaTypes } = require("mongoose")
+const mongoose = require("mongoose")
 
-const Schema = require(mongoose).Schema
+const Schema = require("mongoose").Schema
 /* 
 User to admin i pracownik
   Klienta wykorzeniłem do osobnego modelu, nie jestem pewny czy dobrze to.
@@ -13,33 +14,6 @@ Spotkania
     Serwisy mają części (Serwisy mają swoją cenę i części mają swoją cenę)
       Serwisy maja id mechanika
 */
-
-let User = new Schema({
-  contact: Contact,
-  username: { type: String },
-  email: { type: String },  // , format: email
-  id: { type: String },     // , format: uuid
-})
-let Customer = new Schema({
-  contact: Contact,
-  cars: [Car]
-})
-let Services = new Schema({
-  parts: [CarParts],
-  workerId: { type: String },  // , format: uuid
-  name: { type: String },
-  price: { type: Number }, // Service price
-  description: { type: String }
-})
-let Car = new Schema({
-  appointmentId: [SchemaTypes.ObjectId],  // format uuid,
-  VIN: { type: String },
-  licensePlate: { type: String },
-  model: { type: String },
-  brand: { type: String }
-})
-let CarParts = new Schema(
-  { price: { type: Number }, name: { type: String }, PID: { type: String } })
 let Contact = new Schema({
   firstname: { type: String },
   surname: { type: String },
@@ -49,6 +23,34 @@ let Contact = new Schema({
   birthdate: { type: Date },
   gender: { type: String }
 })
+let Car = new Schema({
+  appointmentId: [SchemaTypes.ObjectId],  // format uuid,
+  VIN: { type: String },
+  licensePlate: { type: String },
+  model: { type: String },
+  brand: { type: String }
+})
+let Customer = new Schema({
+  contact: Contact,
+  cars: [Car]
+})
+let CarParts = new Schema(
+  { price: { type: Number }, name: { type: String }, PID: { type: String } })
+let Services = new Schema({
+  parts: [CarParts],
+  workerId: { type: String },  // , format: uuid
+  name: { type: String },
+  price: { type: Number }, // Service price
+  description: { type: String }
+})
+
+
+let User = new Schema({
+  contact: Contact,
+  username: { type: String },
+  email: { type: String },  // , format: email
+})
+
 let Appointment = new Schema({
   carId: SchemaTypes.ObjectId,
   services: [Services],  // format uuid,
@@ -60,3 +62,13 @@ let Appointment = new Schema({
   stars: { type: Number, min: 0, max: 5 },
   employee: [SchemaTypes.ObjectId]
 })
+
+module.exports = {
+  Contact: mongoose.model("Contact", Contact),
+  Car: mongoose.model("Car", Car),
+  User: mongoose.model("User", User),
+  Customer: mongoose.model("Customer", Customer),
+  Services: mongoose.model("Services", Services),
+  CarParts: mongoose.model("CarParts", CarParts),
+  Appointment: mongoose.model("Appointment", Appointment),
+}
