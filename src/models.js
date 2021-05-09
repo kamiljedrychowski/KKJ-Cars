@@ -1,40 +1,72 @@
-const Schema = require(mongoose).Schema
+const { SchemaTypes } = require("mongoose")
+const mongoose = require("mongoose")
 
-let User = new Schema({
-  username: {type: String},
-  email: {type: String},  // , format: email
-  id: {type: String},     // , format: uuid
+const Schema = require("mongoose").Schema
+/* 
+User to admin i pracownik
+  Klienta wykorzeniłem do osobnego modelu, nie jestem pewny czy dobrze to.
+    Klient ma auta
+      Auta mają odniesienia id do spotkań
+
+Spotkania
+  Spotkania mają pracownikow jako id
+  Spotkania mają serwisy
+    Serwisy mają części (Serwisy mają swoją cenę i części mają swoją cenę)
+      Serwisy maja id mechanika
+*/
+const Contact = new Schema({
+  firstname: { type: String },
+  surname: { type: String },
+  email: { type: String },
+  address: { type: String },
+  phoneNumber: { type: String },
+  birthdate: { type: Date },
+  gender: { type: String }
 })
-let Services = new Schema({
-  parts: [String],
-  worker_id: {type: String},  // , format: uuid
-  name: {type: String},
-  description: {type: String}
+const Car = new Schema({
+  appointmentId: [SchemaTypes.ObjectId],  // format uuid,
+  VIN: { type: String },
+  licensePlate: { type: String },
+  model: { type: String },
+  brand: { type: String }
 })
-let Car = new Schema({
-  appointment_id: [String],  // format uuid,
-  VIN: {type: String},
-  licensePlate: {type: String},
-  model: {type: String},
-  brand: {type: String}
+const Customer = new Schema({
+  contact: Contact,
+  cars: [Car]
 })
-let CarParts = new Schema(
-    {price: {type: Number}, name: {type: String}, PID: {type: String}})
-let Contact = new Schema({
-  firstname: {type: String},
-  surname: {type: String},
-  email: {type: String},
-  address: {type: String},
-  phoneNumber: {type: String},
-  birthdate: {type: String},
-  gender: {type: String}
+const CarParts = new Schema(
+  { price: { type: Number }, name: { type: String }, PID: { type: String } })
+const Services = new Schema({
+  parts: [CarParts],
+  workerId: { type: String },  // , format: uuid
+  name: { type: String },
+  price: { type: Number }, // Service price
+  description: { type: String }
 })
-let Appointment = new Schema({
-  services: [String],  // format uuid,
-  date: {type: String},
-  cost: {type: Number},
-  cancellationDate: {type: String},
-  deliveryDate: {type: String},
-  description: {type: String},
-  stars: {type: Number, min: 0, max: 5}
+const User = new Schema({
+  contact: Contact,
+  username: { type: String },
+  email: { type: String },  // , format: email
+  type: { type: String, enum: ["ADMIN", "EMPLOYEE"] }
 })
+const Appointment = new Schema({
+  carId: SchemaTypes.ObjectId,
+  services: [Services],  // format uuid,
+  date: { type: Date },
+  // cost: { type: Number }, // To powinno wynikać z Services, chyba ze dodatkowa zaplata za caloksztalt tworczosci
+  cancellationDate: { type: Date },
+  deliveryDate: { type: Date },
+  description: { type: String },
+  stars: { type: Number, min: 0, max: 5 },
+  employee: [SchemaTypes.ObjectId]
+})
+
+module.exports = {
+  Contact: mongoose.model("Contact", Contact),
+  Car: mongoose.model("Car", Car),
+  User: mongoose.model("User", User),
+  Customer: mongoose.model("Customer", Customer),
+  Services: mongoose.model("Services", Services),
+  CarParts: mongoose.model("CarParts", CarParts),
+  Appointment: mongoose.model("Appointment", Appointment),
+}
