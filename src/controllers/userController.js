@@ -70,12 +70,13 @@ exports.delete_an_user = function(req, res) {
 };
 
 exports.read_user_contact = function(req, res) {
-    User.deleteOne({_id: req.params.userId}, function(err, user) {
+    User.findById(req.params.userId, function(err, user) {
         if (err){
-            res.status(500).send(err);
+          res.status(500).send(err);
         }
         else{
-            res.json({ message: 'User successfully deleted' });
+        //TODO trzeba zrobić jak będzie znany user żeby zwrócić tylko niektóre dane
+          res.json(user);
         }
     });
 };
