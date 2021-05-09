@@ -14,7 +14,9 @@ exports.list_all_users = function (req, res) {
   });
 };
 
-exports.create_an_users = function (req, res) {
+
+exports.create_an_user = function(req, res) {
+
   var new_user = new User(req.body);
   new_user.save(function (err, user) {
     if (err) {
