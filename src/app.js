@@ -6,6 +6,9 @@ const port = 3000
 
 function main() {
   app.get('/', (req, res) => res.send('Hello world'))
+  let userRoutes = require("./routes/userRoutes")
+
+  userRoutes(app)
   app.listen(port, () => console.log('http://localhost:' + port))
 }
 
