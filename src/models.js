@@ -2,18 +2,6 @@ const { SchemaTypes } = require("mongoose")
 const mongoose = require("mongoose")
 
 const Schema = require("mongoose").Schema
-/* 
-User to admin i pracownik
-  Klienta wykorzeniłem do osobnego modelu, nie jestem pewny czy dobrze to.
-    Klient ma auta
-      Auta mają odniesienia id do spotkań
-
-Spotkania
-  Spotkania mają pracownikow jako id
-  Spotkania mają serwisy
-    Serwisy mają części (Serwisy mają swoją cenę i części mają swoją cenę)
-      Serwisy maja id mechanika
-*/
 const PersonalData = new Schema({
   firstname: { type: String, required: true },
   surname: { type: String, required: true },
@@ -53,8 +41,12 @@ const Customer = new Schema({
   cars: [Car]
 })
 
-const CarParts = new Schema({ //todo finish it  ???
-  price: { type: Number, required: true },
+const CarParts = new Schema({ //todo finish it  
+  price: {
+    type: Number,
+    required: true,
+    set: function (v) { return Math.round(v); }
+  },
   name: { type: String, required: true },
   PID: { type: String, required: true }
 })
@@ -63,7 +55,11 @@ const Services = new Schema({
   parts: [CarParts],
   workerId: { type: SchemaTypes.ObjectId, required: true },
   name: { type: String, required: true },
-  price: { type: Number, required: true },
+  price: {
+    type: Number,
+    required: true,
+    set: function (v) { return Math.round(v); }
+  },
   description: { type: String, required: false }
 })
 
@@ -96,7 +92,7 @@ const Appointment = new Schema({
 })
 
 const stubCarPart = {
-  price: 23.43, // TODO!!!! We need a format to store money
+  price: 23.43,
   name: "Spring",
   PID: "31proij039tffe"
 }
