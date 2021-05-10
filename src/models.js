@@ -16,9 +16,10 @@ const PersonalData = new Schema({
   birthdate: {
     type: Date,
     required: true,
-    validate: function (input) {
-      return typeof new Date(input) === 'date' && new Date(input) >= new Date()
-    },
+    // TODO correct this validator
+    // validate: function (input) {
+    //   return typeof new Date(input) === 'date' && new Date(input) >= new Date()
+    // },
     message: input => `${input} must be greater than or equal to the current date!`
   },
   gender: {
@@ -30,7 +31,12 @@ const PersonalData = new Schema({
 
 const Car = new Schema({
   appointmentId: [SchemaTypes.ObjectId],
-  VIN: { type: String, required: true },// todo validate with pattern
+  VIN: {
+    type: String,
+    required: true,
+    unique: true,
+    match: [/^(?=.*[0-9])(?=.*[A-z])[0-9A-z-]{17}$/, 'Please fill a valid VIN number']
+  },
   licensePlate: { type: String, required: true },
   model: { type: String, required: true },
   brand: { type: String, required: true }
@@ -41,13 +47,15 @@ const Customer = new Schema({
   cars: [Car]
 })
 
-const CarParts = new Schema({ //todo finish it  
+const CarParts = new Schema({
   price: {
     type: Number,
     required: true,
     set: function (v) { return Math.round(v); }
   },
   name: { type: String, required: true },
+  brand: { type: String, required: true },
+  description: { type: String, required: true },
   PID: { type: String, required: true }
 })
 
@@ -111,7 +119,7 @@ const stubCustomer = {
 }
 
 PersonalData.index({ surname: 1, firstname: 1 })
-Customer.index({ 'contact.surname': 1 }) //todo check it
+Customer.index({ 'contact.surname': 1 })
 Car.index({ licensePlate: 1 })
 Services.index({ workerId: 1 })
 User.index({ username: 1 })
