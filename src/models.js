@@ -17,16 +17,16 @@ Spotkania
 const PersonalData = new Schema({
   firstname: { type: String, required: true },
   surname: { type: String, required: true },
-  email: { type: String, required: true },
+  email: { type: String, required: true }, //todo validate email with regex
   address: { type: String, required: true },
   phoneNumber: { type: String, required: true },
-  birthdate: { type: Date, required: true },
-  gender: { type: String, required: true }
+  birthdate: { type: Date, required: true }, //todo validate before today
+  gender: { type: String, required: true } //todo enumerate 
 })
 
 const Car = new Schema({
-  appointmentId: [SchemaTypes.ObjectId],  // format uuid,
-  VIN: { type: String, required: true },
+  appointmentId: [SchemaTypes.ObjectId],  // format uuid, to appointment
+  VIN: { type: String, required: true },// todo validate with pattern
   licensePlate: { type: String, required: true },
   model: { type: String, required: true },
   brand: { type: String, required: true }
@@ -37,7 +37,7 @@ const Customer = new Schema({
   cars: [Car]
 })
 
-const CarParts = new Schema({
+const CarParts = new Schema({ //todo finish it 
   price: { type: Number, required: true },
   name: { type: String, required: true },
   PID: { type: String, required: true }
@@ -45,21 +45,21 @@ const CarParts = new Schema({
 
 const Services = new Schema({
   parts: [CarParts],
-  workerId: { type: String, required: true },  // , format: uuid
+  workerId: { type: SchemaTypes.ObjectId, required: true },  // , format: uuid
   name: { type: String, required: true },
   price: { type: Number, required: true }, // Service price
   description: { type: String, required: false }
 })
 
-const User = new Schema({
+const User = new Schema({ 
   contact: { type: PersonalData, required: true },
   username: { type: String, required: true },
-  email: { type: String, required: true },  // , format: email
+  password: { type: String, required: true },  //  hash this in presave
   type: { type: String, enum: ["ADMIN", "EMPLOYEE", "WORKER"], required: true }
 })
 
 const Appointment = new Schema({
-  carId: { type: SchemaTypes.ObjectId, required: true },
+  carId: { type: SchemaTypes.ObjectId, required: true }, // to a car
   services: [Services],  // format uuid,
   date: { type: Date, required: true },
   // cost: { type: Number }, // To powinno wynikać z Services, chyba ze dodatkowa zaplata za caloksztalt tworczosci
@@ -99,11 +99,11 @@ const stubCustomer = {
 }
 
 PersonalData.index({ surname: 1, firstname: 1 });
-Customer.index({ cars: 1 });
+Customer.index({ 'contact.surname': 1 }); //todo check it
 Car.index({ licensePlate: 1 });
 Services.index({ workerId: 1 });
 User.index({ username: 1 });
-CarParts.index({ workerId: 1 });
+CarParts.index({ PID: 1 });
 
 module.exports = {
   PersonalData: mongoose.model("PersonalData", PersonalData),

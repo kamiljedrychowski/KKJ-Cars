@@ -72,7 +72,7 @@ exports.delete_an_user = function (req, res) {
 };
 
 exports.read_user_contact = function (req, res) {
-  User.findById(req.params.userId, {contact:1}, function (err, user) {
+  User.findById(req.params.userId, function (err, user) { //todo
     if (err) {
       res.status(500).send(err);
     }
