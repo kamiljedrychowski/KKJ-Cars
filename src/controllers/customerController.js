@@ -70,13 +70,12 @@ exports.delete_an_customer = function(req, res) {
 };
 
 exports.list_user_cars = function(req, res) {
-    Customer.findById(req.params.customerId, function(err, customer) {
+    Customer.findById({_id:req.params.customerId}, {cars: 1, _id: 0}, function(err, cars) {
         if (err){
           res.status(500).send(err);
         }
         else{
-        //TODO trzeba zrobić jak będzie znany customer żeby zwrócić jego auta
-          res.json(customer);
+          res.json(cars);
         }
     });
 };
