@@ -14,7 +14,9 @@ exports.list_all_users = function (req, res) {
   });
 };
 
-exports.create_an_users = function (req, res) {
+
+exports.create_an_user = function(req, res) {
+
   var new_user = new User(req.body);
   new_user.save(function (err, user) {
     if (err) {
@@ -70,13 +72,13 @@ exports.delete_an_user = function (req, res) {
 };
 
 exports.read_user_contact = function (req, res) {
-  User.findById(req.params.userId, function (err, user) {
+  User.findById(req.params.userId, {contact:1}, function (err, user) {
     if (err) {
       res.status(500).send(err);
     }
     else {
       //TODO trzeba zrobić jak będzie znany user żeby zwrócić tylko niektóre dane
-      res.json(user);
+      res.json(user.contact);
     }
   });
 };

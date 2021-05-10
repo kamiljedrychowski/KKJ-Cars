@@ -14,7 +14,7 @@ Spotkania
     Serwisy mają części (Serwisy mają swoją cenę i części mają swoją cenę)
       Serwisy maja id mechanika
 */
-const Contact = new Schema({
+const PersonalData = new Schema({
   firstname: { type: String, required: true },
   surname: { type: String, required: true },
   email: { type: String, required: true },
@@ -23,6 +23,7 @@ const Contact = new Schema({
   birthdate: { type: Date, required: true },
   gender: { type: String, required: true }
 })
+
 const Car = new Schema({
   appointmentId: [SchemaTypes.ObjectId],  // format uuid,
   VIN: { type: String, required: true },
@@ -30,12 +31,18 @@ const Car = new Schema({
   model: { type: String, required: true },
   brand: { type: String, required: true }
 })
+
 const Customer = new Schema({
-  contact: { type: Contact, required: true },
+  contact: { type: PersonalData, required: true },
   cars: [Car]
 })
-const CarParts = new Schema(
-  { price: { type: Number, required: true }, name: { type: String, required: true }, PID: { type: String, required: true } })
+
+const CarParts = new Schema({
+  price: { type: Number, required: true },
+  name: { type: String, required: true },
+  PID: { type: String, required: true }
+})
+
 const Services = new Schema({
   parts: [CarParts],
   workerId: { type: String, required: true },  // , format: uuid
@@ -43,12 +50,14 @@ const Services = new Schema({
   price: { type: Number, required: true }, // Service price
   description: { type: String, required: false }
 })
+
 const User = new Schema({
-  contact: { type: Contact, required: true },
+  contact: { type: PersonalData, required: true },
   username: { type: String, required: true },
   email: { type: String, required: true },  // , format: email
-  type: { type: String, enum: ["ADMIN", "EMPLOYEE"], required: true }
+  type: { type: String, enum: ["ADMIN", "EMPLOYEE", "WORKER"], required: true }
 })
+
 const Appointment = new Schema({
   carId: { type: SchemaTypes.ObjectId, required: true },
   services: [Services],  // format uuid,
@@ -89,8 +98,15 @@ const stubCustomer = {
   cars: [stubCar]
 }
 
+PersonalData.index({ surname: 1, firstname: 1 });
+Customer.index({ cars: 1 });
+Car.index({ licensePlate: 1 });
+Services.index({ workerId: 1 });
+User.index({ username: 1 });
+CarParts.index({ workerId: 1 });
+
 module.exports = {
-  Contact: mongoose.model("Contact", Contact),
+  Contact: mongoose.model("Contact", PersonalData),
   Car: mongoose.model("Car", Car),
   User: mongoose.model("User", User),
   Customer: mongoose.model("Customer", Customer),

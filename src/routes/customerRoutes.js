@@ -1,6 +1,6 @@
 'use strict';
 module.exports = function(app) {
-  var users = require('../controllers/userController');
+  var customers = require('../controllers/customerController');
 
   /**
    * Czy to jest potrzebne???
@@ -10,14 +10,14 @@ module.exports = function(app) {
    *    RequiredRoles: None
    *    validated if customer and not validated if clerk
 	 *
-	 * @section users
+	 * @section customer
 	 * @type get post
-	 * @url /v1/users
+	 * @url /v1/customers
    * @param {string} role (clerk|administrator|customer) TODO: ??? czy to jest wgl jakoś potrzebne ???
   */
-  app.route('/v1/users')
-	  .get(users.list_all_users)
-	  .post(users.create_an_user);
+  app.route('/v1/customers')
+	  .get(customers.list_all_customers)
+	  .post(customers.create_an_customer);
 
   /**
    * Put an actor
@@ -27,12 +27,12 @@ module.exports = function(app) {
 	 *
 	 * @section users
 	 * @type get put delete
-	 * @url /v1/users/:userId
+	 * @url /v1/customers/:customerId
   */  
-  app.route('/v1/users/:userId')
-      .get(users.read_an_user)
-      .put(users.update_an_user)
-      .delete(users.delete_an_user);
+  app.route('/v1/customers/:customerId')
+      .get(customers.read_an_customer)
+      .put(customers.update_an_customer)
+      .delete(customers.delete_an_customer);
 
   /**
    * Put an actor
@@ -40,10 +40,10 @@ module.exports = function(app) {
    * Get an actor
    *    RequiredRoles: to be the proper actor or an Administrator
 	 *
-	 * @section users
+	 * @section customers
 	 * @type get
-	 * @url /v1/users/:userId/contact
+	 * @url /v1/users/:customerId/cars
   */
-  app.route('/v1/users/{id}/contact')
-      .get(users.read_user_contact);
+  app.route('/v1/customers/:customerId/cars')
+      .get(customers.list_user_cars);
 };
