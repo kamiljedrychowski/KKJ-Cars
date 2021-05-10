@@ -14,7 +14,8 @@ Spotkania
     Serwisy mają części (Serwisy mają swoją cenę i części mają swoją cenę)
       Serwisy maja id mechanika
 */
-const Contact = new Schema({
+
+const PersonalData = new Schema({
   firstname: { type: String },
   surname: { type: String },
   email: { type: String },
@@ -23,6 +24,7 @@ const Contact = new Schema({
   birthdate: { type: Date },
   gender: { type: String }
 })
+
 const Car = new Schema({
   appointmentId: [SchemaTypes.ObjectId],  // format uuid,
   VIN: { type: String },
@@ -30,12 +32,15 @@ const Car = new Schema({
   model: { type: String },
   brand: { type: String }
 })
+
 const Customer = new Schema({
-  contact: Contact,
+  contact: PersonalData,
   cars: [Car]
 })
+
 const CarParts = new Schema(
   { price: { type: Number }, name: { type: String }, PID: { type: String } })
+
 const Services = new Schema({
   parts: [CarParts],
   workerId: { type: String },  // , format: uuid
@@ -43,12 +48,14 @@ const Services = new Schema({
   price: { type: Number }, // Service price
   description: { type: String }
 })
+
 const User = new Schema({
-  contact: Contact,
+  contact: PersonalData,
   username: { type: String },
   email: { type: String },  // , format: email
-  type: { type: String, enum: ["ADMIN", "EMPLOYEE"] }
+  type: { type: String, enum: ["ADMIN", "EMPLOYEE", "WORKER"] }
 })
+
 const Appointment = new Schema({
   carId: SchemaTypes.ObjectId,
   services: [Services],  // format uuid,
@@ -62,7 +69,7 @@ const Appointment = new Schema({
 })
 
 module.exports = {
-  Contact: mongoose.model("Contact", Contact),
+  Contact: mongoose.model("Contact", PersonalData),
   Car: mongoose.model("Car", Car),
   User: mongoose.model("User", User),
   Customer: mongoose.model("Customer", Customer),
