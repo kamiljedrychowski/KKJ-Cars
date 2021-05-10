@@ -76,7 +76,7 @@ const stubCarPart = {
   PID: "31proij039tffe"
 }
 
-const stubContact = {
+const stubPersonalData = {
   "firstname": "Karol",
   "surname": "Krzosa",
   "email": "asdamdad@gmail.com",
@@ -94,7 +94,7 @@ const stubCar = {
 }
 
 const stubCustomer = {
-  contact: stubContact,
+  contact: stubPersonalData,
   cars: [stubCar]
 }
 
@@ -106,7 +106,7 @@ User.index({ username: 1 });
 CarParts.index({ workerId: 1 });
 
 module.exports = {
-  Contact: mongoose.model("Contact", PersonalData),
+  PersonalData: mongoose.model("PersonalData", PersonalData),
   Car: mongoose.model("Car", Car),
   User: mongoose.model("User", User),
   Customer: mongoose.model("Customer", Customer),
@@ -115,6 +115,6 @@ module.exports = {
   Appointment: mongoose.model("Appointment", Appointment),
   stubCar: stubCar,
   stubCustomer: stubCustomer,
-  stubContact: stubContact
+  stubPersonalData: stubPersonalData
 }
 
