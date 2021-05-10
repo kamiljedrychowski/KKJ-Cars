@@ -32,7 +32,7 @@ exports.create_an_customer = function(req, res) {
 };
 
 exports.read_an_customer = function(req, res) {
-    Customer.findById(req.params.userId, function(err, customer) {
+    Customer.findById(req.params.customerId, function(err, customer) {
     if (err){
       res.status(500).send(err);
     }
@@ -59,7 +59,7 @@ exports.update_an_customer = function(req, res) {
 };
 
 exports.delete_an_customer = function(req, res) {
-    Customer.deleteOne({_id: req.params.userId}, function(err, customer) {
+    Customer.deleteOne({_id: req.params.customerId}, function(err, customer) {
         if (err){
             res.status(500).send(err);
         }
