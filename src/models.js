@@ -67,15 +67,6 @@ const User = new Schema({
   contact: { type: PersonalData, required: true },
   username: { type: String, required: true },
   password: { type: String, required: true },
-  // ASK(Krzosa): Ask if we need to store salt. 
-  // From my understanding salt is used 
-  // to randomize the generated hashes in order to make it harder or impossible
-  // to guess hashes. 
-  // For example when you use plain hash you will easily
-  // see that certain passwords repeat in the db 
-  // (because same passwords have same hashes)
-  // From my understanding salt can be saved in plain text
-  salt: { type: String, required: false },
   type: { type: String, enum: ["ADMIN", "EMPLOYEE", "WORKER"], required: true }
 })
 
@@ -137,11 +128,19 @@ User.pre('save', function (callback) {
     bcrypt.hash(user.password, salt, function (err, hash) {
       if (err) return callback(err)
       user.password = hash
-      user.salt = salt
       callback()
     })
   })
 })
+
+User.methods.verifyPassword = function (password, callback) {
+  bcrypt.compare(password, this.password, function (err, isMatch) {
+    console.log('verifying password in actorModel: ' + password)
+    if (err) return callback(err)
+    console.log('iMatch: ' + isMatch)
+    callback(null, isMatch)
+  })
+}
 
 module.exports = {
   PersonalData: mongoose.model("PersonalData", PersonalData),
