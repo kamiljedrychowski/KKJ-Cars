@@ -61,6 +61,34 @@ const Appointment = new Schema({
   employee: [SchemaTypes.ObjectId]
 })
 
+const stubCarPart = {
+  price: 23.43, // TODO!!!! We need a format to store money
+  name: "Spring",
+  PID: "31proij039tffe"
+}
+
+const stubContact = {
+  "firstname": "Karol",
+  "surname": "Krzosa",
+  "email": "asdamdad@gmail.com",
+  "address": "123 aspofmapof ",
+  "phoneNumber": "123 345 676",
+  "birthdate": new Date(),
+  "gender": "male"
+}
+
+const stubCar = {
+  VIN: "4S4BRDSC2D2221585",
+  licensePlate: "77 LU 555",
+  model: "Octavia",
+  brand: "Skoda"
+}
+
+const stubCustomer = {
+  contact: stubContact,
+  cars: [stubCar]
+}
+
 module.exports = {
   Contact: mongoose.model("Contact", Contact),
   Car: mongoose.model("Car", Car),
@@ -69,4 +97,8 @@ module.exports = {
   Services: mongoose.model("Services", Services),
   CarParts: mongoose.model("CarParts", CarParts),
   Appointment: mongoose.model("Appointment", Appointment),
+  stubCar: stubCar,
+  stubCustomer: stubCustomer,
+  stubContact: stubContact
 }
+
