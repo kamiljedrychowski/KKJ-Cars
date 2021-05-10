@@ -16,9 +16,10 @@ test.push("Test get_customers_most_cancelled_appointments", () => {
             res.status(500).send(err);
         }
         else {
+            let appointments = []
             users.map(user => {
                 for (let i in user.cars) {
-                    console.log(user.cars[i]._id)
+                    console.log(user.cars[i].appointmentId)
                 }
             })
         }
