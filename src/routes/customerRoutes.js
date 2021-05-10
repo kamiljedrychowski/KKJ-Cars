@@ -44,6 +44,6 @@ module.exports = function(app) {
 	 * @type get
 	 * @url /v1/users/:customerId/cars
   */
-  app.route('/v1/customers/{id}/cars')
+  app.route('/v1/customers/:customerId/cars')
       .get(customers.list_user_cars);
 };

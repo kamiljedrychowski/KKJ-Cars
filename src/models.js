@@ -38,8 +38,11 @@ const Customer = new Schema({
   cars: [Car]
 })
 
-const CarParts = new Schema(
-  { price: { type: Number }, name: { type: String }, PID: { type: String } })
+const CarParts = new Schema({
+  price: { type: Number },
+  name: { type: String },
+  PID: { type: String }
+})
 
 const Services = new Schema({
   parts: [CarParts],
@@ -67,6 +70,13 @@ const Appointment = new Schema({
   stars: { type: Number, min: 0, max: 5 },
   employee: [SchemaTypes.ObjectId]
 })
+
+PersonalData.index({ surname: 1, firstname: 1 });
+Customer.index({ cars: 1 });
+Car.index({ licensePlate: 1 });
+Services.index({ workerId: 1 });
+User.index({ username: 1 });
+CarParts.index({ workerId: 1 });
 
 module.exports = {
   Contact: mongoose.model("Contact", PersonalData),

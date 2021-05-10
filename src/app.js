@@ -10,8 +10,11 @@ function main() {
   app.use(bodyParser.json());
   app.get('/', (req, res) => res.send('Hello world'))
   let userRoutes = require("./routes/userRoutes")
+  let customerRoutes = require("./routes/customerRoutes")
 
   userRoutes(app)
+  customerRoutes(app)
+
   app.listen(port, () => console.log('http://localhost:' + port))
 }
 
