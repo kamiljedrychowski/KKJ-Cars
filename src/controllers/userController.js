@@ -72,13 +72,12 @@ exports.delete_an_user = function (req, res) {
 };
 
 exports.read_user_contact = function (req, res) {
-  User.findById(req.params.userId, function (err, user) { //todo
+  User.findById(req.params.userId, { contact: 1, _id: 0 }, function (err, contact) {
     if (err) {
       res.status(500).send(err);
     }
     else {
-      //TODO trzeba zrobić jak będzie znany user żeby zwrócić tylko niektóre dane
-      res.json(user.contact);
+      res.json(contact);
     }
   });
 };

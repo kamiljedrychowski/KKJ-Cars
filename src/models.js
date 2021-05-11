@@ -79,10 +79,10 @@ const User = new Schema({
 })
 
 const Appointment = new Schema({
-  carId: { type: SchemaTypes.ObjectId, required: true }, // to a car
+  carId: { type: SchemaTypes.ObjectId, required: true },
   services: [Services],
   date: { type: Date, required: true },
-  cost: { type: Number, default: 0 }, // This can be computed on retrival 
+  cost: { type: Number, default: 0 }, // Compute this 
   cancellationDate: { type: Date, required: false },
   deliveryDate: { type: Date, required: false },
   description: { type: String, required: false },
