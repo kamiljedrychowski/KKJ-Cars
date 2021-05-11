@@ -46,9 +46,9 @@ module.exports = function (app) {
     */
     app.route('/v1/customers/:customerId/cars')
         .get(customers.list_user_cars)
-        .post(customers.add_user_cars);
+        .post(customers.add_user_cars); //add user car
 
     app.route('/v1/customers/:customerId/cars/:carId')
-        .delete(customers.delete_user_cars);
+        .delete(customers.delete_user_cars); //singular
 
 };

@@ -22,7 +22,7 @@ const PersonalData = new Schema({
     required: true,
     // TODO correct this validator
     // validate: function (input) {
-    //   return typeof new Date(input) === 'date' && new Date(input) >= new Date()
+    //   return typeof new Date(input) === 'date' && new Date(input) >= new Date() //check if registering person has over 18yo
     // },
     message: input => `${input} must be greater than or equal to the current date!`
   },
@@ -34,7 +34,7 @@ const PersonalData = new Schema({
 })
 
 const Car = new Schema({
-  appointmentId: [SchemaTypes.ObjectId],
+  appointmentId: [SchemaTypes.ObjectId], // to car
   VIN: {
     type: String,
     required: true,
@@ -55,7 +55,7 @@ const CarParts = new Schema({
   price: {
     type: Number,
     required: true,
-    set: function (v) { return Math.round(v); }
+    set: function (v) { return Math.round(v); } //think about this - where to round this
   },
   name: { type: String, required: true },
   brand: { type: String, required: true },
@@ -65,7 +65,7 @@ const CarParts = new Schema({
 
 const Services = new Schema({
   parts: [CarParts],
-  workerId: { type: SchemaTypes.ObjectId, required: true },
+  workerId: { type: SchemaTypes.ObjectId, required: true },  //reference to other model
   name: { type: String, required: true },
   price: {
     type: Number,
@@ -83,15 +83,15 @@ const User = new Schema({
 })
 
 const Appointment = new Schema({
-  carId: { type: SchemaTypes.ObjectId, required: true },
-  services: [Services],
+  carId: { type: SchemaTypes.ObjectId, required: true }, //reference to car & index to all cars in all user
+  services: [Services], //services -> service carParts also!
   date: { type: Date, required: true },
   cost: { type: Number, default: 0 }, // Compute this 
   cancellationDate: { type: Date, required: false },
   deliveryDate: { type: Date, required: false },
   description: { type: String, required: false },
   stars: { type: Number, min: 0, max: 5, required: false },
-  employee: [SchemaTypes.ObjectId]
+  employee: [SchemaTypes.ObjectId] // referenced to 
 })
 
 const stubCarPart = {
@@ -122,9 +122,8 @@ const stubCustomer = {
   cars: [stubCar]
 }
 
-PersonalData.index({ surname: 1, firstname: 1 })
-Customer.index({ 'contact.surname': 1 })
-Car.index({ licensePlate: 1 })
+PersonalData.index({ surname: 1, firstname: 1 }) //make text index
+Car.index({ licensePlate: 1 }) //_id make index!! for searching all cars
 Services.index({ workerId: 1 })
 User.index({ username: 1 })
 CarParts.index({ PID: 1 })
@@ -156,11 +155,11 @@ User.methods.verifyPassword = function (password, callback) {
 
 module.exports = {
   PersonalData: mongoose.model("PersonalData", PersonalData),
-  Car: mongoose.model("Car", Car),
+  // Car: mongoose.model("Car", Car), // Check if we dont need it in other place
   User: mongoose.model("User", User),
   Customer: mongoose.model("Customer", Customer),
   Services: mongoose.model("Services", Services),
-  CarParts: mongoose.model("CarParts", CarParts),
+  // CarParts: mongoose.model("CarParts", CarParts),
   Appointment: mongoose.model("Appointment", Appointment),
   stubCar: stubCar,
   stubCustomer: stubCustomer,
