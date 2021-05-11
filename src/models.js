@@ -12,7 +12,11 @@ const PersonalData = new Schema({
     match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
   },
   address: { type: String, required: true },
-  phoneNumber: { type: String, required: true },
+  phoneNumber: { 
+    type: String, 
+    required: true,
+    match: [/(?<!\w)(\(?(\+|00)?48\)?)?[ -]?\d{3}[ -]?\d{3}[ -]?\d{3}(?!\w)/, 'Please fill a valid phone number']
+  },
   birthdate: {
     type: Date,
     required: true,
