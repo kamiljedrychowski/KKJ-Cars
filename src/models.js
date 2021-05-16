@@ -136,18 +136,18 @@ module.exports = {
 }
 
 const test = require("./test")
-test.push("Save PersonalData", () => {
+test.push("Save PersonalData at least 18 years old throws error", () => {
   let data = new module.exports.PersonalData({
     firstname: "Karol", 
     surname: "Krzosa",
-    email: "asdasdadsfsdfji@email.com", 
+    email: "asdasdadasdsfsdfji@email.com", 
     address: "12edqowd,opqw",
     phoneNumber: "793025232", 
-    birthdate: '2000-12-09',
+    birthdate: '2012-12-09',
     gender: "MALE"
   })
   data.save(function(err) {
-    if(err) console.log(err)
-    else console.log("success")
+    if(err) return 0
+    console.log("Invalid codepath")
   })
 })
