@@ -20,11 +20,13 @@ const PersonalData = new Schema({
   birthdate: {
     type: Date,
     required: true,
-    // TODO correct this validator
-    // validate: function (input) {
-    //   return typeof new Date(input) === 'date' && new Date(input) >= new Date() //check if registering person has over 18yo
-    // },
-    message: input => `${input} must be greater than or equal to the current date!`
+    validate: function (input) {
+      const date = new Date(input)
+      let isOldEnough = new Date()
+      isOldEnough.setFullYear(isOldEnough.getFullYear() - 18)
+      return date < isOldEnough
+    },
+    message: input => `${input} person must be at least 18 years old`
   },
   gender: {
     type: String,
@@ -133,3 +135,19 @@ module.exports = {
   Appointment: mongoose.model("Appointment", Appointment),
 }
 
+const test = require("./test")
+test.push("Save PersonalData", () => {
+  let data = new module.exports.PersonalData({
+    firstname: "Karol", 
+    surname: "Krzosa",
+    email: "asdasdadsfsdfji@email.com", 
+    address: "12edqowd,opqw",
+    phoneNumber: "793025232", 
+    birthdate: '2000-12-09',
+    gender: "MALE"
+  })
+  data.save(function(err) {
+    if(err) console.log(err)
+    else console.log("success")
+  })
+})

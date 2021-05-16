@@ -44,6 +44,7 @@ if (process.argv.length > 2) {
   // files with tests need to be required here to execute
   const test = require('./test')
   require('./controllers/statsController')
+  require('./models')
   db.on("open", test.run)
 } else {
   db.on("open", main)

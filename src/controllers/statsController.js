@@ -5,26 +5,27 @@ const Customer = mongoose.model('Customer')
 const models = require('../models')
 const test = require('../test')
 
-test.push("Add customer to db", () => {
-    let customer = new Customer(models.stubCustomer)
-    customer.save()
-})
+// test.push("Add customer to db", () => {
+//     let customer = new Customer(models.stubCustomer)
+//     customer.save()
+// })
 
-test.push("Test get_customers_most_cancelled_appointments", () => {
-    Customer.find({}, function (err, users) {
-        if (err) {
-            res.status(500).send(err);
-        }
-        else {
-            let appointments = []
-            users.map(user => {
-                for (let i in user.cars) {
-                    console.log(user.cars[i].appointmentId)
-                }
-            })
-        }
-    })
-})
+// test.push("Test get_customers_most_cancelled_appointments", () => {
+//     Customer.find({}, function (err, users) {
+//         if (err) {
+//             // res.status(500).send(err);
+//             console.log("error")
+//         }
+//         else {
+//             let appointments = []
+//             users.map(user => {
+//                 for (let i in user.cars) {
+//                     console.log(user.cars[i].appointmentId)
+//                 }
+//             })
+//         }
+//     })
+// })
 //TODO poprawić według najnowszej wersji wymagań (pdf)
 exports.get_customers_most_cancelled_appointments = function (req, res) {
     //tu powinno być average_price_of_service_by_brand Dawid
