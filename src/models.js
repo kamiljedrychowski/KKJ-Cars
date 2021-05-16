@@ -20,11 +20,13 @@ const PersonalData = new Schema({
   birthdate: {
     type: Date,
     required: true,
-    // TODO correct this validator
-    // validate: function (input) {
-    //   return typeof new Date(input) === 'date' && new Date(input) >= new Date() //check if registering person has over 18yo
-    // },
-    message: input => `${input} must be greater than or equal to the current date!`
+    validate: function (input) {
+      const date = new Date(input)
+      let isOldEnough = new Date()
+      isOldEnough.setFullYear(isOldEnough.getFullYear() - 18)
+      return date < isOldEnough
+    },
+    message: input => `${input} person must be at least 18 years old`
   },
   gender: {
     type: String,
@@ -41,7 +43,7 @@ const User = new Schema({
 })
 
 const Car = new Schema({
-  appointmentId: [SchemaTypes.ObjectId], // to car
+  appointmentId: [{ type: Schema.Types.ObjectId, ref: 'Car' }],
   VIN: {
     type: String,
     required: true,
@@ -72,7 +74,7 @@ const CarPart = new Schema({
 
 const Service = new Schema({
   parts: [CarPart],
-  workerId: { type: SchemaTypes.ObjectId, required: true },  //reference to other model
+  workerId: { type: SchemaTypes.ObjectId, required: true, ref: "User" },  
   name: { type: String, required: true },
   price: {
     type: Number,
@@ -83,7 +85,7 @@ const Service = new Schema({
 })
 
 const Appointment = new Schema({
-  carId: { type: SchemaTypes.ObjectId, required: true }, //reference to car & index to all cars in all user
+  carId: { type: SchemaTypes.ObjectId, required: true, ref: "Car" }, //reference to car & index to all cars in all user
   services: [Service],
   date: { type: Date, required: true },
   cost: { type: Number, default: 0 }, // Compute this 
@@ -91,7 +93,7 @@ const Appointment = new Schema({
   deliveryDate: { type: Date, required: false },
   description: { type: String, required: false },
   stars: { type: Number, min: 0, max: 5, required: false },
-  employee: [SchemaTypes.ObjectId] // referenced to 
+  employee: [{ type: Schema.Types.ObjectId, ref: 'User' }]
 })
 
 PersonalData.index({ surname: 1, firstname: 1 }) //make text index
@@ -133,3 +135,19 @@ module.exports = {
   Appointment: mongoose.model("Appointment", Appointment),
 }
 
+const test = require("./test")
+test.push("Save PersonalData at least 18 years old throws error", () => {
+  let data = new module.exports.PersonalData({
+    firstname: "Karol", 
+    surname: "Krzosa",
+    email: "asdasdadasdsfsdfji@email.com", 
+    address: "12edqowd,opqw",
+    phoneNumber: "793025232", 
+    birthdate: '2012-12-09',
+    gender: "MALE"
+  })
+  data.save(function(err) {
+    if(err) return 0
+    console.log("Invalid codepath")
+  })
+})
