@@ -68,7 +68,53 @@ const appointment = {
     employee: "..."
 }
 
-test.push("get_workers_with_highest_rating", function() {
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+}
+
+function getRandomIntAs3LetterString() {
+    let num = getRandomInt(999)
+    let result = ""
+    if (num < 10) {
+        result += "00" + String(num)
+    } else if (num < 100) {
+        result += "0" + String(num)
+    } else {
+        result += String(num)
+    }
+
+    return result
+}
+
+function getPersonalData() {
+    return {
+        firstname: "Karol",
+        surname: "Krzosa",
+        email: `asdasdadasdsfsdfji${getRandomInt(20000000)}@email.com`,
+        address: "12edqowd,opqw",
+        phoneNumber: "793025232",
+        birthdate: '2000-12-09',
+        gender: "MALE"
+    }
+}
+
+function getCar() {
+    return {
+        VIN: "4S4BRDSC2D2221" + getRandomIntAs3LetterString(),
+        licensePlate: "77 LU 555",
+        model: "Octavia",
+        brand: "Skoda"
+    }
+}
+
+function getCustomer() {
+    return {
+        contact: getPersonalData(),
+        cars: [getCar()]
+      }
+}
+
+test.push("get_workers_with_highest_rating", function () {
     // User.deleteMany()
     // User.find({}, function (err, customers) {
     //     if (err) {
@@ -78,9 +124,9 @@ test.push("get_workers_with_highest_rating", function() {
     //       customers.de
     //     }
     //   })
-    let employee = new User({login: "cool", password: "guy", contact: seed.stubPersonalData, type: "EMPLOYEE"})
+    let employee = new User({ username: "cool", password: "guy", contact: seed.getPersonalData, type: "EMPLOYEE" })
     let customer = new Customer(seed.stubCustomer)
-    employee.save(function(err) { console.log(err)})
-    customer.save(function(err) { console.log(err)})
+    employee.save(function (err) { console.log(err) })
+    customer.save(function (err) { console.log(err) })
     console.log(employee, customer)
 })
