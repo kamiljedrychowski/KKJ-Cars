@@ -33,6 +33,13 @@ const PersonalData = new Schema({
   }
 })
 
+const User = new Schema({
+  contact: { type: PersonalData, required: true },
+  username: { type: String, required: true },
+  password: { type: String, required: true },
+  type: { type: String, enum: ["ADMIN", "EMPLOYEE", "WORKER"], required: true }
+})
+
 const Car = new Schema({
   appointmentId: [SchemaTypes.ObjectId], // to car
   VIN: {
@@ -75,13 +82,6 @@ const Service = new Schema({
   description: { type: String, required: false }
 })
 
-const User = new Schema({
-  contact: { type: PersonalData, required: true },
-  username: { type: String, required: true },
-  password: { type: String, required: true },
-  type: { type: String, enum: ["ADMIN", "EMPLOYEE", "WORKER"], required: true }
-})
-
 const Appointment = new Schema({
   carId: { type: SchemaTypes.ObjectId, required: true }, //reference to car & index to all cars in all user
   services: [Service],
@@ -93,34 +93,6 @@ const Appointment = new Schema({
   stars: { type: Number, min: 0, max: 5, required: false },
   employee: [SchemaTypes.ObjectId] // referenced to 
 })
-
-const stubCarPart = {
-  price: 23.43,
-  name: "Spring",
-  PID: "31proij039tffe"
-}
-
-const stubPersonalData = {
-  "firstname": "Karol",
-  "surname": "Krzosa",
-  "email": "asdamdad@gmail.com",
-  "address": "123 aspofmapof ",
-  "phoneNumber": "123 345 676",
-  "birthdate": new Date(),
-  "gender": "male"
-}
-
-const stubCar = {
-  VIN: "4S4BRDSC2D2221585",
-  licensePlate: "77 LU 555",
-  model: "Octavia",
-  brand: "Skoda"
-}
-
-const stubCustomer = {
-  contact: stubPersonalData,
-  cars: [stubCar]
-}
 
 PersonalData.index({ surname: 1, firstname: 1 }) //make text index
 Car.index({ licensePlate: 1 }) //_id make index!! for searching all cars
@@ -155,14 +127,9 @@ User.methods.verifyPassword = function (password, callback) {
 
 module.exports = {
   PersonalData: mongoose.model("PersonalData", PersonalData),
-  // Car: mongoose.model("Car", Car), // Check if we dont need it in other place
   User: mongoose.model("User", User),
   Customer: mongoose.model("Customer", Customer),
   Service: mongoose.model("Service", Service),
-  // CarParts: mongoose.model("CarParts", CarParts),
   Appointment: mongoose.model("Appointment", Appointment),
-  stubCar: stubCar,
-  stubCustomer: stubCustomer,
-  stubPersonalData: stubPersonalData
 }
 
