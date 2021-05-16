@@ -25,18 +25,23 @@ test.push("Test get_customers_most_cancelled_appointments", () => {
         }
     })
 })
-
+//TODO poprawić według najnowszej wersji wymagań (pdf)
 exports.get_customers_most_cancelled_appointments = function (req, res) {
+    //tu powinno być average_price_of_service_by_brand Dawid
 }
 
 exports.get_customers_least_cancelled_appointments = function (req, res) {
+    //tu powinno być brand_of_cars_with_most_services Karol
 }
 
 exports.get_most_valuable_car_brands = function (req, res) {
+    //tu powinno być top_brands_by_gender Kamil
 }
 
 exports.get_workers_with_highest_rating = function (req, res) {
+    //Karol
 }
 
 exports.get_workers_with_lowest_rating = function (req, res) {
+    //Karol
 }
