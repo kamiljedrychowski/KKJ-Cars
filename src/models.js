@@ -135,19 +135,19 @@ module.exports = {
   Appointment: mongoose.model("Appointment", Appointment),
 }
 
-const test = require("./test")
-test.push("Save PersonalData at least 18 years old throws error", () => {
-  let data = new module.exports.PersonalData({
-    firstname: "Karol", 
-    surname: "Krzosa",
-    email: "asdasdadasdsfsdfji@email.com", 
-    address: "12edqowd,opqw",
-    phoneNumber: "793025232", 
-    birthdate: '2012-12-09',
-    gender: "MALE"
-  })
-  data.save(function(err) {
-    if(err) return 0
-    console.log("Invalid codepath")
-  })
-})
+// const test = require("./test")
+// test.push("Save PersonalData at least 18 years old throws error", () => {
+//   let data = new module.exports.PersonalData({
+//     firstname: "Karol", 
+//     surname: "Krzosa",
+//     email: "asdasdadasdsfsdfji@email.com", 
+//     address: "12edqowd,opqw",
+//     phoneNumber: "793025232", 
+//     birthdate: '2012-12-09',
+//     gender: "MALE"
+//   })
+//   data.save(function(err) {
+//     if(err) return 0
+//     console.log("Invalid codepath")
+//   })
+// })

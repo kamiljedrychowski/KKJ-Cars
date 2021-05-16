@@ -8,27 +8,6 @@ const models = require('../models')
 const test = require('../test')
 const seed = require('../seeds/modelSeeds')
 
-test.push("Add customer to db", () => {
-    let customer = new Customer(seed.stubCustomer)
-    customer.save()
-})
-
-test.push("get_workers_with_highest_rating", () => {
-    // Customer.find({}, function (err, users) {
-    //     if (err) {
-    //         // res.status(500).send(err);
-    //         console.log("error")
-    //     }
-    //     else {
-    //         let appointments = []
-    //         users.map(user => {
-    //             for (let i in user.cars) {
-    //                 console.log(user.cars[i].appointmentId)
-    //             }
-    //         })
-    //     }
-    // })
-})
 //TODO poprawić według najnowszej wersji wymagań (pdf)
 exports.get_customers_most_cancelled_appointments = function (req, res) {
     //tu powinno być average_price_of_service_by_brand Dawid
@@ -90,7 +69,7 @@ function getPersonalData() {
     return {
         firstname: "Karol",
         surname: "Krzosa",
-        email: `asdasdadasdsfsdfji${getRandomInt(20000000)}@email.com`,
+        email: Math.random() + `asdasdadasdsfsdfji${getRandomInt(20000000)}@email.com`,
         address: "12edqowd,opqw",
         phoneNumber: "793025232",
         birthdate: '2000-12-09',
@@ -101,7 +80,7 @@ function getPersonalData() {
 function getCar() {
     return {
         VIN: "4S4BRDSC2D2221" + getRandomIntAs3LetterString(),
-        licensePlate: "77 LU 555",
+        licensePlate: "77 LU " + getRandomIntAs3LetterString(),
         model: "Octavia",
         brand: "Skoda"
     }
@@ -110,8 +89,12 @@ function getCar() {
 function getCustomer() {
     return {
         contact: getPersonalData(),
-        cars: [getCar()]
-      }
+        cars: [getCar(), getCar()]
+    }
+}
+
+function getUser() {
+    return { username: "cool" + Math.random(), password: "guy", contact: getPersonalData(), type: "EMPLOYEE" }
 }
 
 test.push("get_workers_with_highest_rating", function () {
@@ -124,9 +107,9 @@ test.push("get_workers_with_highest_rating", function () {
     //       customers.de
     //     }
     //   })
-    let employee = new User({ username: "cool", password: "guy", contact: seed.getPersonalData, type: "EMPLOYEE" })
-    let customer = new Customer(seed.stubCustomer)
-    employee.save(function (err) { console.log(err) })
-    customer.save(function (err) { console.log(err) })
+    let employee = new User(getUser())
+    let customer = new Customer(getCustomer())
+    // employee.save(function (err) { console.log(err) })
+    // customer.save(function (err) { console.log(err) })
     console.log(employee, customer)
 })
