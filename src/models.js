@@ -51,7 +51,7 @@ const Customer = new Schema({
   cars: [Car]
 })
 
-const CarParts = new Schema({
+const CarPart = new Schema({
   price: {
     type: Number,
     required: true,
@@ -63,8 +63,8 @@ const CarParts = new Schema({
   PID: { type: String, required: true }
 })
 
-const Services = new Schema({
-  parts: [CarParts],
+const Service = new Schema({
+  parts: [CarPart],
   workerId: { type: SchemaTypes.ObjectId, required: true },  //reference to other model
   name: { type: String, required: true },
   price: {
@@ -84,7 +84,7 @@ const User = new Schema({
 
 const Appointment = new Schema({
   carId: { type: SchemaTypes.ObjectId, required: true }, //reference to car & index to all cars in all user
-  services: [Services], //services -> service carParts also!
+  services: [Service],
   date: { type: Date, required: true },
   cost: { type: Number, default: 0 }, // Compute this 
   cancellationDate: { type: Date, required: false },
@@ -124,9 +124,9 @@ const stubCustomer = {
 
 PersonalData.index({ surname: 1, firstname: 1 }) //make text index
 Car.index({ licensePlate: 1 }) //_id make index!! for searching all cars
-Services.index({ workerId: 1 })
+Service.index({ workerId: 1 })
 User.index({ username: 1 })
-CarParts.index({ PID: 1 })
+CarPart.index({ PID: 1 })
 
 const bcrypt = require('bcrypt')
 User.pre('save', function (callback) {
@@ -158,7 +158,7 @@ module.exports = {
   // Car: mongoose.model("Car", Car), // Check if we dont need it in other place
   User: mongoose.model("User", User),
   Customer: mongoose.model("Customer", Customer),
-  Services: mongoose.model("Services", Services),
+  Service: mongoose.model("Service", Service),
   // CarParts: mongoose.model("CarParts", CarParts),
   Appointment: mongoose.model("Appointment", Appointment),
   stubCar: stubCar,
