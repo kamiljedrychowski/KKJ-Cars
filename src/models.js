@@ -86,7 +86,7 @@ const Appointment = new Schema({
   carId: { type: SchemaTypes.ObjectId, required: true }, //reference to car & index to all cars in all user
   services: [Service],
   date: { type: Date, required: true },
-  cost: { type: Number, default: 0 }, // Compute this 
+  cost: { type: Number, default: 0 },
   cancellationDate: { type: Date, required: false },
   deliveryDate: { type: Date, required: false },
   description: { type: String, required: false },
@@ -99,6 +99,17 @@ Car.index({ licensePlate: 1 }) //_id make index!! for searching all cars
 Service.index({ workerId: 1 })
 User.index({ username: 1 })
 CarPart.index({ PID: 1 })
+
+
+Appointment.pre('save', function(callback) {
+  var new_item = this;
+  new_item.cost = 14;
+  callback();
+});
+// Appointment.pre('findOneAndUpdate', function(doc) {
+  // var new_item = this;
+  // new_item.cost = 14;
+// });
 
 const bcrypt = require('bcrypt')
 User.pre('save', function (callback) {

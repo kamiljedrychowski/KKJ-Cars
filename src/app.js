@@ -1,6 +1,7 @@
 const mongoose = require("mongoose")
 const express = require('express')
 const userRoutes = require("./routes/userRoutes")
+const appointmentRoutes = require("./routes/appointmentRoutes")
 const statsRoutes = require("./routes/statsRoutes")
 const bodyParser = require('body-parser')
 require("./models")
@@ -16,6 +17,7 @@ function main() {
   statsRoutes(app)
   userRoutes(app)
   customerRoutes(app)
+  appointmentRoutes(app)
 
   app.listen(port, () => console.log('http://localhost:' + port))
 }
