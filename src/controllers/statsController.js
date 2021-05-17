@@ -35,8 +35,28 @@ exports.get_customers_least_cancelled_appointments = function (req, res) {
     //tu powinno być brand_of_cars_with_most_services Karol
 }
 
-exports.get_most_valuable_car_brands = function (req, res) {
-    //tu powinno być top_brands_by_gender Kamil
+exports.get_top_brands_by_gender = function (req, res) {
+    Customer.aggregate([
+        { $unwind: '$cars' },
+        { $group: { _id: { gender: '$contact.gender', brand: '$cars.brand' }, numberOfCars: { $sum: 1 } } },
+        { $sort: { 'numberOfCars': -1 } },
+        {
+            $group: {
+                _id: '$_id.gender', topCarBrands: {
+                    $push: {
+                        brand: '$_id.brand', numberOfCars: '$numberOfCars'
+                    }
+                }
+            }
+        }
+    ], function (err, top_brands_by_gender) {
+        if (err) {
+            res.status(500).send(err);
+        }
+        else {
+            res.json(top_brands_by_gender);
+        }
+    });
 }
 
 exports.get_workers_with_highest_rating = function (req, res) {

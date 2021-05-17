@@ -85,7 +85,7 @@ const Service = new Schema({
 })
 
 const Appointment = new Schema({
-  carId: { type: SchemaTypes.ObjectId, required: true, ref: "Car" }, //reference to car & index to all cars in all user
+  carId: { type: SchemaTypes.ObjectId, required: true, ref: "Car" }, //reference to car
   services: [Service],
   date: { type: Date, required: true },
   cost: { type: Number, default: 0 }, // Compute this 
@@ -96,8 +96,8 @@ const Appointment = new Schema({
   employee: [{ type: Schema.Types.ObjectId, ref: 'User' }]
 })
 
-PersonalData.index({ surname: 1, firstname: 1 }) //make text index
-Car.index({ licensePlate: 1 }) //_id make index!! for searching all cars
+PersonalData.index({ surname: 'text', firstname: 'text' })
+Car.index({licensePlate: 1, _id: 1 })
 Service.index({ workerId: 1 })
 User.index({ username: 1 })
 CarPart.index({ PID: 1 })
@@ -128,10 +128,8 @@ User.methods.verifyPassword = function (password, callback) {
 }
 
 module.exports = {
-  PersonalData: mongoose.model("PersonalData", PersonalData),
   User: mongoose.model("User", User),
   Customer: mongoose.model("Customer", Customer),
-  Service: mongoose.model("Service", Service),
   Appointment: mongoose.model("Appointment", Appointment),
 }
 
