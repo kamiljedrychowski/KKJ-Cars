@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const Customer = mongoose.model('Customer')
 const User = mongoose.model('User')
 const Appointment = mongoose.model('Appointment')
+const Service = mongoose.model('Service')
 const models = require('../models')
 const test = require('../test')
 const seed = require('../seeds/modelSeeds')
@@ -29,24 +30,6 @@ exports.get_workers_with_lowest_rating = function (req, res) {
     //Karol
 }
 
-const service = {
-    parts: [seed.stubCarPart],
-    name: "Car repair",
-    price: 100,
-    description: "Very cool car repair",
-    workerId: "needs to be filled"
-}
-
-const appointment = {
-    services: [service, service],
-    carId: "...",
-    date: new Date(),
-    deliveryDate: "2021-12-12",
-    description: "Very cool appointment",
-    stars: 5,
-    employee: "..."
-}
-
 function getRandomInt(max) {
     return Math.floor(Math.random() * max);
 }
@@ -65,7 +48,29 @@ function getRandomIntAs3LetterString() {
     return result
 }
 
-function getPersonalData() {
+function newService(workerId) {
+    return {
+        parts: [seed.stubCarPart],
+        name: "Car repair",
+        price: 100,
+        description: "Very cool car repair",
+        workerId: workerId
+    }
+}
+
+function newAppointment(carId, employeeId, services) {
+    return {
+        services: services,
+        carId: carId,
+        date: new Date(),
+        deliveryDate: "2021-12-12",
+        description: "Very cool appointment",
+        stars: 5,
+        employee: employeeId
+    }
+}
+
+function newPersonalData() {
     return {
         firstname: "Karol",
         surname: "Krzosa",
@@ -77,7 +82,7 @@ function getPersonalData() {
     }
 }
 
-function getCar() {
+function newCar() {
     return {
         VIN: "4S4BRDSC2D2221" + getRandomIntAs3LetterString(),
         licensePlate: "77 LU " + getRandomIntAs3LetterString(),
@@ -88,13 +93,18 @@ function getCar() {
 
 function getCustomer() {
     return {
-        contact: getPersonalData(),
-        cars: [getCar(), getCar()]
+        contact: newPersonalData(),
+        cars: [newCar(), newCar()]
     }
 }
 
-function getUser() {
-    return { username: "cool" + Math.random(), password: "guy", contact: getPersonalData(), type: "EMPLOYEE" }
+function newUser(type) {
+    return {
+        username: "cool" + Math.random(),
+        password: "guy",
+        contact: newPersonalData(),
+        type: type
+    }
 }
 
 test.push("get_workers_with_highest_rating", function () {
@@ -107,9 +117,13 @@ test.push("get_workers_with_highest_rating", function () {
     //       customers.de
     //     }
     //   })
-    let employee = new User(getUser())
+    let employee = new User(newUser("EMPLOYEE"))
+    let worker = new User(newUser("WORKER"))
     let customer = new Customer(getCustomer())
+    let service = new Service(newService(worker._id))
+    let appointment = new Appointment(newAppointment(customer.cars[0]._id, employee._id, [service]))
+    console.log(appointment)
     // employee.save(function (err) { console.log(err) })
     // customer.save(function (err) { console.log(err) })
-    console.log(employee, customer)
+    // console.log(employee, customer)
 })
