@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 const mongoose = require('mongoose')
 const Customer = mongoose.model('Customer')
@@ -31,7 +31,7 @@ exports.get_workers_with_lowest_rating = function (req, res) {
 }
 
 function getRandomInt(max) {
-    return Math.floor(Math.random() * max);
+    return Math.floor(Math.random() * max)
 }
 
 function getRandomIntAs3LetterString() {
@@ -108,18 +108,8 @@ function newUser(type) {
 }
 
 test.push("get_workers_with_highest_rating", function () {
-
-    Appointment.aggregate([
-        {$match: {}}
-    ]).exec((err, locations) => {
-        if (err) throw err;
-        console.log(locations);
-    })
-
-
-
     // const handleErr = (msg) => (err) => {
-    //     if(err) console.log(err) 
+    //     if (err) console.log(err)
     //     else console.log(msg)
     // }
 
@@ -133,4 +123,35 @@ test.push("get_workers_with_highest_rating", function () {
     // worker.save(handleErr)
     // customer.save(handleErr)
     // appointment.save(handleErr)
+
+    Appointment.aggregate([
+        { $match: {} }
+    ]).exec((err, appoint) => {
+        if (err) throw err
+        let workers = {}
+        for (let i = 0; i < appoint.length; i++) {
+            let stars = appoint[i].stars
+            for (let j = 0; j < appoint[i].services.length; j++) {
+                Service.populate(appoint[i].services[j], { path: "workerId" }, (err, res) => {
+                    if (err) { console.log(err) }
+                    else {
+                        if (workers[res.workerId._id] == undefined) {
+                            workers[res.workerId._id] = {
+                                "total": stars,
+                                "count": 1
+                            }
+                        } else {
+                            workers[res.workerId._id].count++
+                            workers[res.workerId._id].stars++
+                        }
+                        if (i + 1 == appoint.length && j + 1 == appoint[i].services.length)
+                            console.log("Response:", workers)
+                    }
+                })
+            }
+        }
+        // console.log(workers)
+
+    })
+
 })
