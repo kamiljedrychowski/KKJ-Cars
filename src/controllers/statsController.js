@@ -108,31 +108,29 @@ function newUser(type) {
 }
 
 test.push("get_workers_with_highest_rating", function () {
-    // User.deleteMany()
-    // User.find({}, function (err, customers) {
-    //     if (err) {
-    //       console.log(err)
-    //     }
-    //     else {
-    //       customers.de
-    //     }
-    //   })
-    const handleErr = (msg) => (err) => {
-        if(err) console.log(err) 
-        else console.log(msg)
-    }
 
-    let employee = new User(newUser("EMPLOYEE"))
-    let worker = new User(newUser("WORKER"))
-    let customer = new Customer(getCustomer())
-    let service = new Service(newService(worker._id))
-    let appointment = new Appointment(newAppointment(customer.cars[0]._id, employee._id, [service]))
+    Appointment.aggregate([
+        {$match: {}}
+    ]).exec((err, locations) => {
+        if (err) throw err;
+        console.log(locations);
+    })
 
-    employee.save(handleErr)
-    worker.save(handleErr)
-    customer.save(handleErr)
-    appointment.save(handleErr)
-    // employee.save(function (err) { console.log(err) })
-    // customer.save(function (err) { console.log(err) })
-    // console.log(employee, customer)
+
+
+    // const handleErr = (msg) => (err) => {
+    //     if(err) console.log(err) 
+    //     else console.log(msg)
+    // }
+
+    // let employee = new User(newUser("EMPLOYEE"))
+    // let worker = new User(newUser("WORKER"))
+    // let customer = new Customer(getCustomer())
+    // let service = new Service(newService(worker._id))
+    // let appointment = new Appointment(newAppointment(customer.cars[0]._id, employee._id, [service]))
+
+    // employee.save(handleErr)
+    // worker.save(handleErr)
+    // customer.save(handleErr)
+    // appointment.save(handleErr)
 })
