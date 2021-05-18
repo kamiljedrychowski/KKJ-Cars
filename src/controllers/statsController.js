@@ -27,8 +27,9 @@ const test = require('../test')
 //     })
 // })
 //TODO poprawić według najnowszej wersji wymagań (pdf)
-exports.get_customers_most_cancelled_appointments = function (req, res) {
-    //tu powinno być average_price_of_service_by_brand Dawid
+exports.average_price_of_service_by_brand = function (req, res) {
+    // Appointment -> unwind -> groupby car.brand -> avg;
+    //2 sposob Customer -> Car -> mamy lista appointments id oraz brand
 }
 
 exports.get_customers_least_cancelled_appointments = function (req, res) {
