@@ -19,6 +19,9 @@ module.exports = function(app) {
 	  .get(users.list_all_users)
 	  .post(users.create_an_user);
 
+ app.route('/v1/users/search')
+	  .get(users.search);
+
   /**
    * Put an actor
    *    RequiredRoles: to be the proper actor

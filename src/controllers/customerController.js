@@ -103,3 +103,23 @@ exports.delete_user_cars = function (req, res) {
     }
   });
 };
+
+exports.search = function(req, res) {
+ var query = {};
+ 
+ if (req.query.name) {
+   query.$text = {$search: req.query.name};
+ }
+
+ console.log("Query: "+query.$text);
+
+ Customer.find(query)
+     .exec(function(err, items){
+         if (err){
+           res.send(err);
+         }
+         else{
+           res.json(items);
+         }
+       });
+};

@@ -19,6 +19,10 @@ module.exports = function (app) {
         .get(customers.list_all_customers)
         .post(customers.create_an_customer);
 
+    app.route('/v1/customers/search')
+        .get(customers.search);
+
+
     /**
      * Put an actor
      *    RequiredRoles: to be the proper actor
