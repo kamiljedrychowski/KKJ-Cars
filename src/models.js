@@ -74,7 +74,7 @@ const CarPart = new Schema({
 
 const Service = new Schema({
   parts: [CarPart],
-  workerId: { type: SchemaTypes.ObjectId, required: true, ref: "User" },
+  workerId: { type: Schema.Types.ObjectId, required: true, ref: "User" },
   name: { type: String, required: true },
   price: {
     type: Number,
@@ -85,7 +85,7 @@ const Service = new Schema({
 })
 
 const Appointment = new Schema({
-  carId: { type: SchemaTypes.ObjectId, required: true, ref: "Car" }, //reference to car
+  carId: { type: Schema.Types.ObjectId, required: true, ref: "Car" }, //reference to car
   services: [Service],
   date: { type: Date, required: true },
   cost: { type: Number, default: 0 },

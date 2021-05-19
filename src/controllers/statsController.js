@@ -2,11 +2,13 @@
 
 const mongoose = require('mongoose')
 const Customer = mongoose.model('Customer')
+const Car = mongoose.model('Car')
 const User = mongoose.model('User')
 const Appointment = mongoose.model('Appointment')
 const models = require('../models')
 const test = require('../test')
 const seed = require('../seeds/modelSeeds')
+const { carModels } = require('../seeds/modelSeeds')
 
 //TODO poprawić według najnowszej wersji wymagań (pdf)
 exports.average_price_of_service_by_brand = function (req, res) {
@@ -98,6 +100,11 @@ function getRandomIntAs3LetterString() {
     return result
 }
 
+const handleErr = (msg) => (err) => {
+    if (err) console.log(err)
+    else console.log(msg)
+}
+
 function newService(workerId) {
     return {
         parts: [seed.stubCarPart],
@@ -142,9 +149,13 @@ function newCar() {
 }
 
 function newCustomer() {
+    let car1 = new Car(newCar())
+    let car2 = new Car(newCar())
+    car1.save(handleErr)
+    car2.save(handleErr)
     return {
         contact: newPersonalData(),
-        cars: [newCar(), newCar()]
+        cars: [car1, car2]
     }
 }
 
@@ -158,41 +169,48 @@ function newUser(type) {
 }
 
 test.push("get_workers_with_highest_rating", function () {
-
-    const handleErr = (msg) => (err) => {
-        if (err) console.log(err)
-        else console.log(msg)
-    }
-
-    let employee = new User(newUser("EMPLOYEE"))
-    let worker = new User(newUser("WORKER"))
-    let customer = new Customer(newCustomer())
-    let appointment = new Appointment(newAppointment(customer.cars[0]._id, employee._id, [newService(worker._id)]))
-
-    employee.save(handleErr)
-    worker.save(handleErr)
-    customer.save(handleErr)
-    appointment.save(handleErr)
-
     let res = { json: (a) => console.log(a) }
     console.log("workers with highest rating:")
     get_workers(null, res, true)
 })
 
 test.push("brand_of_cars_with_most_services", function () {
+    let employee = new User(newUser("EMPLOYEE"))
+    let worker = new User(newUser("WORKER"))
+    let customer = new Customer(newCustomer())
+    let appointment = new Appointment(newAppointment(customer.cars[0]._id,
+        employee._id, [newService(worker._id)]))
+
+    employee.save(handleErr)
+    worker.save(handleErr)
+    customer.save(handleErr)
+    appointment.save(handleErr)
     Appointment.aggregate([
         { $unwind: "$services" },
+        {
+            $lookup: {
+                from: "cars",
+                localField: "carId",
+                foreignField: "_id",
+                as: "car"
+            }
+        },
+        { $unwind: "$car" },
+        { $project: { "car.brand": 1, "services._id": 1 } },
+        { $group: { _id: "$car.brand", serv: { $push: "$services._id" } } }
     ]).exec((err, result) => {
         if (err) {
             console.log(err)
         } else {
-            Appointment.populate(result, { path: "carId" }, (err, result) => {
-                if (err) {
-                    console.log(err)
-                } else {
-                    console.log(result)
-                }
-            })
+            console.log(result)
+            // Appointment.populate(result, { path: "carId" }, (err, result) => {
+            //     if (err) {
+            //         console.log(err)
+            //     } else {
+
+            //         console.log(result)
+            //     }
+            // })
         }
     })
 })
