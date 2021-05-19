@@ -12,8 +12,8 @@ const PersonalData = new Schema({
     match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
   },
   address: { type: String, required: true },
-  phoneNumber: { 
-    type: String, 
+  phoneNumber: {
+    type: String,
     required: true,
     match: [/(?<!\w)(\(?(\+|00)?48\)?)?[ -]?\d{3}[ -]?\d{3}[ -]?\d{3}(?!\w)/, 'Please fill a valid phone number']
   },
@@ -74,7 +74,7 @@ const CarPart = new Schema({
 
 const Service = new Schema({
   parts: [CarPart],
-  workerId: { type: SchemaTypes.ObjectId, required: true, ref: "User" },  
+  workerId: { type: SchemaTypes.ObjectId, required: true, ref: "User" },
   name: { type: String, required: true },
   price: {
     type: Number,
@@ -97,20 +97,20 @@ const Appointment = new Schema({
 })
 
 PersonalData.index({ surname: 'text', firstname: 'text' })
-Car.index({licensePlate: 1, _id: 1 })
+Car.index({ licensePlate: 1, _id: 1 })
 Service.index({ workerId: 1 })
 User.index({ username: 1 })
 CarPart.index({ PID: 1 })
 
 
-Appointment.pre('save', function(callback) {
+Appointment.pre('save', function (callback) {
   var new_item = this;
   new_item.cost = 14;
   callback();
 });
 // Appointment.pre('findOneAndUpdate', function(doc) {
-  // var new_item = this;
-  // new_item.cost = 14;
+// var new_item = this;
+// new_item.cost = 14;
 // });
 
 const bcrypt = require('bcrypt')
@@ -142,6 +142,7 @@ module.exports = {
   User: mongoose.model("User", User),
   Customer: mongoose.model("Customer", Customer),
   Appointment: mongoose.model("Appointment", Appointment),
+  Car: mongoose.model("Car", Car),
 }
 
 // const test = require("./test")

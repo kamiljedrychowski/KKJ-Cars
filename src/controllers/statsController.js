@@ -174,19 +174,25 @@ test.push("get_workers_with_highest_rating", function () {
     customer.save(handleErr)
     appointment.save(handleErr)
 
-    // let res = {
-    //     json: (a) => console.log(a)
-    // }
-    // get_workers(null, res, true)
+    let res = { json: (a) => console.log(a) }
+    console.log("workers with highest rating:")
+    get_workers(null, res, true)
+})
 
-    // Appointment.aggregate([
-    //     { $populate: "$carId" },
-    // ]).exec((err, result) => {
-    //     if (err) {
-    //         console.log(err)
-    //     } else {
-    //         console.log(result)
-    //     }
-    // })
-
+test.push("brand_of_cars_with_most_services", function () {
+    Appointment.aggregate([
+        { $unwind: "$services" },
+    ]).exec((err, result) => {
+        if (err) {
+            console.log(err)
+        } else {
+            Appointment.populate(result, { path: "carId" }, (err, result) => {
+                if (err) {
+                    console.log(err)
+                } else {
+                    console.log(result)
+                }
+            })
+        }
+    })
 })
