@@ -3,36 +3,41 @@ const mongoose = require("mongoose")
 
 const Schema = require("mongoose").Schema
 
-const stubCarPart = {
-    price: 23.43,
-    name: "Spring",
-    PID: "31proij039tffe"
-  }
-  
-  const stubPersonalData = {
-    "firstname": "Karol",
-    "surname": "Krzosa",
-    "email": "asdamdad@gmail.com",
-    "address": "123 aspofmapof ",
-    "phoneNumber": "123 345 676",
-    "birthdate": new Date(),
-    "gender": "male"
-  }
-  
-  const stubCar = {
-    VIN: "4S4BRDSC2D2221585",
-    licensePlate: "77 LU 555",
-    model: "Octavia",
-    brand: "Skoda"
-  }
-  
-  const stubCustomer = {
-    contact: stubPersonalData,
-    cars: [stubCar]
-  }
+const carModels = ["Octavia", "Pasat", "Maxima", "Sentra", "Mirage", "Outlander", "Lancer", "Audi", "Mustang", "Cabriolet", "Suv"]
+const carBrands = ["Skoda", "Volkswagen", "Mazda", "Nissan", "Ford", "Vector", "Mercury", "Chevrolet"]
 
-  module.exports = {
-    stubCar: stubCar,
-    stubCustomer: stubCustomer,
-    stubPersonalData: stubPersonalData
-  }
+const stubCarPart = {
+  price: 23,
+  name: "Spring",
+  PID: "31proij039tffe",
+  brand: "Brand",
+  description: "Very cool"
+}
+
+const stubPersonalData = {
+  firstname: "Karol",
+  surname: "Krzosa",
+  email: `asdasdadasdsfsdfji@email.com`,
+  address: "12edqowd,opqw",
+  phoneNumber: "793025232",
+  birthdate: '2000-12-09',
+  gender: "MALE"
+}
+
+const stubCar = {
+  VIN: "4S4BRDSC2D2221555",
+  licensePlate: "77 LU 555",
+  model: "Octavia",
+  brand: "Skoda"
+}
+
+const stubCustomer = {
+  contact: stubPersonalData,
+  cars: [stubCar]
+}
+
+module.exports = {
+  stubCar: stubCar,
+  stubCustomer: stubCustomer,
+  stubPersonalData: stubPersonalData
+}
