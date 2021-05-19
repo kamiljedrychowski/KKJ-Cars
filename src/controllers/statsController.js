@@ -22,12 +22,42 @@ exports.get_most_valuable_car_brands = function (req, res) {
     //tu powinno być top_brands_by_gender Kamil
 }
 
+function get_workers(req, res, highest = true) {
+    if (highest === true) highest = -1
+    else highest = 1
+    User.aggregate([
+        { $project: { _type: "$type" } },
+        { $match: { _type: "WORKER" } },
+        { $group: { _id: null, count: { $sum: 1 } } }
+    ]).exec((err, result) => {
+        if (err) {
+            res.status(500).send(err)
+        } else {
+            let perc10 = Math.ceil(0.1 * result[0]['count'])
+            Appointment.aggregate([
+                { $unwind: "$services" },
+                { $project: { worker: "$services.workerId", stars: "$stars" } },
+                { $group: { _id: "$worker", avgStars: { $avg: "$stars" } } },
+                { $sort: { avgStars: highest } },
+                { $limit: perc10 }
+            ]).exec((err, result) => {
+                if (err) {
+                    res.status(500).send(err)
+                } else {
+                    res.json(result)
+                }
+            })
+
+        }
+    })
+}
+
 exports.get_workers_with_highest_rating = function (req, res) {
-    //Karol
+    get_workers(req, res, true)
 }
 
 exports.get_workers_with_lowest_rating = function (req, res) {
-    //Karol
+    get_workers(req, res, false)
 }
 
 function getRandomInt(max) {
@@ -65,7 +95,7 @@ function newAppointment(carId, employeeId, services) {
         date: new Date(),
         deliveryDate: "2021-12-12",
         description: "Very cool appointment",
-        stars: 5,
+        stars: getRandomInt(5),
         employee: employeeId
     }
 }
@@ -108,50 +138,25 @@ function newUser(type) {
 }
 
 test.push("get_workers_with_highest_rating", function () {
-    // const handleErr = (msg) => (err) => {
-    //     if (err) console.log(err)
-    //     else console.log(msg)
-    // }
+    const handleErr = (msg) => (err) => {
+        if (err) console.log(err)
+        else console.log(msg)
+    }
 
-    // let employee = new User(newUser("EMPLOYEE"))
-    // let worker = new User(newUser("WORKER"))
-    // let customer = new Customer(getCustomer())
-    // let service = new Service(newService(worker._id))
-    // let appointment = new Appointment(newAppointment(customer.cars[0]._id, employee._id, [service]))
+    let employee = new User(newUser("EMPLOYEE"))
+    let worker = new User(newUser("WORKER"))
+    let customer = new Customer(getCustomer())
+    let service = new Service(newService(worker._id))
+    let appointment = new Appointment(newAppointment(customer.cars[0]._id, employee._id, [service]))
 
-    // employee.save(handleErr)
-    // worker.save(handleErr)
-    // customer.save(handleErr)
-    // appointment.save(handleErr)
+    employee.save(handleErr)
+    worker.save(handleErr)
+    customer.save(handleErr)
+    appointment.save(handleErr)
 
-    Appointment.aggregate([
-        { $match: {} }
-    ]).exec((err, appoint) => {
-        if (err) throw err
-        let workers = {}
-        for (let i = 0; i < appoint.length; i++) {
-            let stars = appoint[i].stars
-            for (let j = 0; j < appoint[i].services.length; j++) {
-                Service.populate(appoint[i].services[j], { path: "workerId" }, (err, res) => {
-                    if (err) { console.log(err) }
-                    else {
-                        if (workers[res.workerId._id] == undefined) {
-                            workers[res.workerId._id] = {
-                                "total": stars,
-                                "count": 1
-                            }
-                        } else {
-                            workers[res.workerId._id].count++
-                            workers[res.workerId._id].stars++
-                        }
-                        if (i + 1 == appoint.length && j + 1 == appoint[i].services.length)
-                            console.log("Response:", workers)
-                    }
-                })
-            }
-        }
-        // console.log(workers)
-
-    })
+    let res = {
+        json: (a) => console.log(a)
+    }
+    get_workers(null, res, true)
 
 })
