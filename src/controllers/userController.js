@@ -81,3 +81,25 @@ exports.read_user_contact = function (req, res) {
     }
   });
 };
+
+exports.search = function(req, res) {
+  var query = {};
+  
+  if (req.query.name) {
+    query.$text = {$search: req.query.name};
+  }
+ 
+  console.log("Query: "+query.$text);
+ 
+  User.find(query)
+      .exec(function(err, items){
+          if (err){
+            res.send(err);
+          }
+          else{
+            res.json(items);
+          }
+        });
+ };
+
+ 

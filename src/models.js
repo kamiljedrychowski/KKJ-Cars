@@ -47,7 +47,6 @@ const Car = new Schema({
   VIN: {
     type: String,
     required: true,
-    unique: true,
     match: [/^(?=.*[0-9])(?=.*[A-z])[0-9A-z-]{17}$/, 'Please fill a valid VIN number']
   },
   licensePlate: { type: String, required: true },
