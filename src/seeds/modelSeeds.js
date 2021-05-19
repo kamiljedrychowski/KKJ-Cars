@@ -3,9 +3,6 @@ const mongoose = require("mongoose")
 
 const Schema = require("mongoose").Schema
 
-const carModels = ["Octavia", "Pasat", "Maxima", "Sentra", "Mirage", "Outlander", "Lancer", "Audi", "Mustang", "Cabriolet", "Suv"]
-const carBrands = ["Skoda", "Volkswagen", "Mazda", "Nissan", "Ford", "Vector", "Mercury", "Chevrolet"]
-
 const stubCarPart = {
   price: 23,
   name: "Spring",
@@ -39,5 +36,7 @@ const stubCustomer = {
 module.exports = {
   stubCar: stubCar,
   stubCustomer: stubCustomer,
-  stubPersonalData: stubPersonalData
+  stubPersonalData: stubPersonalData,
+  carModels: ["Octavia", "Pasat", "Maxima", "Sentra", "Mirage", "Outlander", "Lancer", "Audi", "Mustang", "Cabriolet", "Suv"],
+  carBrands: ["Skoda", "Volkswagen", "Mazda", "Nissan", "Ford", "Vector", "Mercury", "Chevrolet"],
 }
