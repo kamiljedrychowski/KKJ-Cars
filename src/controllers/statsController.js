@@ -10,10 +10,27 @@ const test = require('../test')
 const seed = require('../seeds/modelSeeds')
 const { carModels } = require('../seeds/modelSeeds')
 
-//TODO poprawić według najnowszej wersji wymagań (pdf)
 exports.average_price_of_service_by_brand = function (req, res) {
-    // Appointment -> unwind -> groupby car.brand -> avg;
-    //2 sposob Customer -> Car -> mamy lista appointments id oraz brand
+    Appointment.aggregate([
+        { $unwind: "$services" },
+        {
+            $lookup: {
+                from: "cars",
+                localField: "carId",
+                foreignField: "_id",
+                as: "car"
+            }
+        },
+        { $unwind: "$car" },
+        { $project: { "car.brand": 1, "services.price": 1 } },
+        { $group: { _id: "$car.brand", serv: { $avg: "$services.price" } } },
+    ]).exec((err, result) => {
+        if (err) {
+            res.status(500).send(err);
+        } else {
+            res.json(result)
+        }
+    })
 }
 
 exports.brand_of_cars_with_most_services = function (req, res) {
@@ -210,5 +227,5 @@ test.push("get_workers_with_highest_rating", function () {
 
 test.push("brand_of_cars_with_most_services", function () {
     let res = { json: (a) => { console.log("brand_of_cars_with_most_services:", a) } }
-    exports.brand_of_cars_with_most_services(null, res)
+    exports.average_price_of_service_by_brand(null, res)
 })
