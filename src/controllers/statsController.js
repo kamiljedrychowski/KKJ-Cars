@@ -30,7 +30,9 @@ exports.brand_of_cars_with_most_services = function (req, res) {
         { $unwind: "$car" },
         { $project: { "car.brand": 1, "services._id": 1 } },
         { $group: { _id: "$car.brand", serv: { $push: "$services._id" } } },
-        { $project: { "car.brand": 1, serviceCount: { $size: "$serv" } } }
+        { $project: { "car.brand": 1, serviceCount: { $size: "$serv" } } },
+        { $sort: { "serviceCount": -1 } },
+        { $limit: 1 }
     ]).exec((err, result) => {
         if (err) {
             res.status(500).send(err);
