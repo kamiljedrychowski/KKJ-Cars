@@ -35,5 +35,6 @@ function post(path, json) {
     req.end()
 }
 
-post('/v1/users', { username: "BOB", email: "BOB@gmail.com" })
-get('/v1/users')
+// post('/v1/users', { username: "BOB", email: "BOB@gmail.com" })
+// get('/v1/users')
+get("/v1/appointments/search")

@@ -1,5 +1,5 @@
 'use strict';
-module.exports = function(app) {
+module.exports = function (app) {
   var appointments = require('../controllers/appointmentController');
 
   /**
@@ -11,15 +11,15 @@ module.exports = function(app) {
 	 * @url /v1/appointments
   */
   app.route('/v1/appointments')
-	  .get(appointments.list_all_appointments)
-	  .post(appointments.create_an_appointment);
+    .get(appointments.list_all_appointments)
+    .post(appointments.create_an_appointment);
 
-  app.route('v1/appointments/search')
+  app.route('/v1/appointments/search')
     .get(appointments.search);
 
   app.route('/v1/appointments/:appointmentId')
-      .get(appointments.read_an_appointment)
-      .put(appointments.update_an_appointment)
-      .delete(appointments.delete_an_appointment);
+    .get(appointments.read_an_appointment)
+    .put(appointments.update_an_appointment)
+    .delete(appointments.delete_an_appointment);
 
 };
