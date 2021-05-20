@@ -3,9 +3,6 @@ module.exports = function (app) {
   var appointments = require('../controllers/appointmentController');
 
   /**
-   * Get an actor who is  (any role)
-   * Post an actor 
-	 *
 	 * @section appointments
 	 * @type get post
 	 * @url /v1/appointments

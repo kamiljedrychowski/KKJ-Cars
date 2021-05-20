@@ -10,10 +10,16 @@ const test = require('../test')
 const seed = require('../seeds/modelSeeds')
 const { carModels } = require('../seeds/modelSeeds')
 
-//TODO poprawić według najnowszej wersji wymagań (pdf)
 exports.average_price_of_service_by_brand = function (req, res) {
-    // Appointment -> unwind -> groupby car.brand -> avg;
-    //2 sposob Customer -> Car -> mamy lista appointments id oraz brand
+    Appointment.aggregate([
+        {}
+    ]).exec((err, result) => {
+        if (err) {
+            res.status(500).send(err);
+        } else {
+            res.json(result)
+        }
+    })
 }
 
 exports.brand_of_cars_with_most_services = function (req, res) {
