@@ -26,6 +26,30 @@ exports.create_an_appointment = function (req, res) {
       }
     }
     else {
+      Appointment.aggregate([
+        { $match: { _id: appointment._id } },
+        { $unwind: '$services' },
+        {
+          $project: {
+            'services': 1, 'partsPrice': {
+              $reduce: {
+                input: "$services.parts.price",
+                initialValue: 0,
+                in: { $add: ["$$value", "$$this"] }
+              }
+            }
+          }
+        },
+        {
+          $group: { _id: '_id', 'partsPrices': { $sum: '$partsPrice' }, 'servicesPrices': { $sum: '$services.price' } }
+        },
+        { $project: { 'totalCost': { $add: ['$partsPrices', '$servicesPrices'] } } }
+      ]).exec(
+        (err, res) => {
+          console.log(res);
+          abc = res[0].totalCost;
+        }
+      )
       res.json(appointment);
     }
   });
@@ -53,7 +77,35 @@ exports.update_an_appointment = function (req, res) {
       }
     }
     else {
-      res.json(appointment);
+      Appointment.aggregate([
+        { $match: { _id: appointment._id } },
+        { $unwind: '$services' },
+        {
+          $project: {
+            'services': 1, 'partsPrice': {
+              $reduce: {
+                input: "$services.parts.price",
+                initialValue: 0,
+                in: { $add: ["$$value", "$$this"] }
+              }
+            }
+          }
+        },
+        {
+          $group: { _id: '_id', 'partsPrices': { $sum: '$partsPrice' }, 'servicesPrices': { $sum: '$services.price' } }
+        },
+        { $project: { 'totalCost': { $add: ['$partsPrices', '$servicesPrices'] } } }
+      ]).exec(
+        (err, resA) => {
+          appointment.cost = resA[0].totalCost;
+          appointment.markModified('cost')
+          Appointment.findOneAndUpdate({ _id: appointment._id }, {"$set": {"cost": resA[0].totalCost}})
+          appointment.save().then((savedDoc) => {
+            console.log('err \n', savedDoc)
+          })
+          res.json(appointment);
+        }
+      )
     }
   });
 };
