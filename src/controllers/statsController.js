@@ -17,7 +17,27 @@ exports.average_price_of_service_by_brand = function (req, res) {
 }
 
 exports.brand_of_cars_with_most_services = function (req, res) {
-    //tu powinno być  Karol
+    Appointment.aggregate([
+        { $unwind: "$services" },
+        {
+            $lookup: {
+                from: "cars",
+                localField: "carId",
+                foreignField: "_id",
+                as: "car"
+            }
+        },
+        { $unwind: "$car" },
+        { $project: { "car.brand": 1, "services._id": 1 } },
+        { $group: { _id: "$car.brand", serv: { $push: "$services._id" } } },
+        { $project: { "car.brand": 1, serviceCount: { $size: "$serv" } } }
+    ]).exec((err, result) => {
+        if (err) {
+            res.status(500).send(err);
+        } else {
+            res.json(result)
+        }
+    })
 }
 
 exports.get_top_brands_by_gender = function (req, res) {
@@ -168,13 +188,7 @@ function newUser(type) {
     }
 }
 
-test.push("get_workers_with_highest_rating", function () {
-    let res = { json: (a) => console.log(a) }
-    console.log("workers with highest rating:")
-    get_workers(null, res, true)
-})
-
-test.push("brand_of_cars_with_most_services", function () {
+test.push("add_documents_to_database", function () {
     let employee = new User(newUser("EMPLOYEE"))
     let worker = new User(newUser("WORKER"))
     let customer = new Customer(newCustomer())
@@ -185,32 +199,14 @@ test.push("brand_of_cars_with_most_services", function () {
     worker.save(handleErr)
     customer.save(handleErr)
     appointment.save(handleErr)
-    Appointment.aggregate([
-        { $unwind: "$services" },
-        {
-            $lookup: {
-                from: "cars",
-                localField: "carId",
-                foreignField: "_id",
-                as: "car"
-            }
-        },
-        { $unwind: "$car" },
-        { $project: { "car.brand": 1, "services._id": 1 } },
-        { $group: { _id: "$car.brand", serv: { $push: "$services._id" } } }
-    ]).exec((err, result) => {
-        if (err) {
-            console.log(err)
-        } else {
-            console.log(result)
-            // Appointment.populate(result, { path: "carId" }, (err, result) => {
-            //     if (err) {
-            //         console.log(err)
-            //     } else {
+})
 
-            //         console.log(result)
-            //     }
-            // })
-        }
-    })
+test.push("get_workers_with_highest_rating", function () {
+    let res = { json: (a) => { console.log("Workers with highest rating:", a) } }
+    get_workers(null, res, true)
+})
+
+test.push("brand_of_cars_with_most_services", function () {
+    let res = { json: (a) => { console.log("brand_of_cars_with_most_services:", a) } }
+    exports.brand_of_cars_with_most_services(null, res)
 })
